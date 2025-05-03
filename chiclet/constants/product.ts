@@ -1,3 +1,15 @@
+export type Product = {
+  id: number;
+  name: string;
+  price: number;
+  tag: string;
+  category: string;
+  description: string;
+  colors: string[];
+  rating: number;
+  image: string;
+};
+
 export const products = [
   {
     id: 1,
