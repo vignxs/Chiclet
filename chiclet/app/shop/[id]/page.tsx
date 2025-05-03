@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 import { useCartStore } from "@/lib/store"
 import { products as allProducts } from "@/constants/product"
+import { toast } from "sonner"
 
 const products = allProducts
 
@@ -25,7 +25,6 @@ export default function ProductPage({ params }: PageProps) {
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
   const [activeImage, setActiveImage] = useState(0)
-  const { toast } = useToast()
   const { addItem } = useCartStore()
 
   const productId = Number.parseInt(use(params).id);
@@ -49,15 +48,13 @@ export default function ProductPage({ params }: PageProps) {
       image: product.image,
     })
 
-    toast({
-      title: "Added to cart",
+    toast("Added to cart",{
       description: `${product.name} (${selectedColor || product.colors[0]}) has been added to your cart.`,
     })
   }
 
   const handleAddToWishlist = () => {
-    toast({
-      title: "Added to wishlist",
+    toast("Added to wishlist",{
       description: `${product.name} has been added to your wishlist.`,
     })
   }
