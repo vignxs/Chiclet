@@ -13,7 +13,11 @@ import { products as allProducts } from "@/constants/product"
 
 // Sample product data
 const products = allProducts
-export default function ProductPage({ params }: { params: { id: string } }) {
+type ProductPageParams = {
+  id: string;
+};
+
+export default function ProductPage({ params }: { params: ProductPageParams }) {
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
   const [activeImage, setActiveImage] = useState(0)
