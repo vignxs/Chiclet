@@ -30,7 +30,9 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero Section */}
-      <section className="relative w-full py-24 md:py-32 overflow-hidden">
+      {/* <section className="relative w-full py-24   md:py-32 overflow-hidden"> */}
+      <section className="relative w-full py-16 sm:py-20 md:py-24 lg:py-32 xl:py-20  2xl:py-40 overflow-hidden">
+
         <div className="container px-4 md:px-6 mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 space-y-8 text-center md:text-left animate-slideUp">
@@ -70,10 +72,9 @@ export default function Home() {
                 <div className="absolute inset-0 bg-pink-100 rounded-full opacity-20"></div>
                 <div className="absolute inset-4 bg-pink-200 rounded-full opacity-20"></div>
                 <Image
-                  src="/placeholder.svg?height=500&width=500"
+                  src="https://img.freepik.com/free-photo/fashionable-modern-rococo-style_23-2151916460.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740"
                   alt="Hero Image"
-                  width={500}
-                  height={500}
+                  fill
                   className="relative z-10 object-cover rounded-2xl shadow-lg animate-fadeIn"
                 />
               </div>

@@ -56,7 +56,7 @@ export default function ContactUs() {
 
           {/* Contact Info */}
           <div className="space-y-8">
-            <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+            {/* <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
               <div className="grid gap-6">
                 <div className="flex items-start space-x-4">
                   <MapPin className="w-5 h-5 text-pink-500 mt-1" />
@@ -92,7 +92,7 @@ export default function ContactUs() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="aspect-video w-full bg-gray-200 rounded-lg overflow-hidden">
               {/* This would be a map in a real implementation */}

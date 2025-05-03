@@ -3,10 +3,10 @@ import Link from "next/link"
 
 export default function Categories() {
   const categories = [
-    { name: "Earrings", image: "/placeholder.svg?height=300&width=300" },
-    { name: "Necklaces", image: "/placeholder.svg?height=300&width=300" },
-    { name: "Hair Accessories", image: "/placeholder.svg?height=300&width=300" },
-    { name: "Bracelets", image: "/placeholder.svg?height=300&width=300" },
+    { name: "Earrings", image: "https://img.freepik.com/premium-photo/gold-jhumka_1188452-6995.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
+    { name: "Necklaces", image: "https://img.freepik.com/free-photo/young-woman-exudes-elegance-traditional-sari-generated-by-ai_188544-38358.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
+    { name: "Hair Accessories", image: "https://img.freepik.com/free-photo/luxury-bouquet-ornate-yellow-flower-petals-generated-by-ai_188544-41814.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
+    { name: "Bracelets", image: "https://img.freepik.com/free-photo/multi-colored-gemstone-jewelry-symbol-elegance-generated-by-ai_188544-27715.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
   ]
 
   return (
@@ -37,7 +37,7 @@ export default function Categories() {
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-opacity-30">
+              <div className="absolute inset-0  bg-opacity-20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-opacity-30">
                 <h3 className="text-white font-medium text-lg md:text-xl">{category.name}</h3>
               </div>
             </Link>

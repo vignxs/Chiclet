@@ -16,9 +16,9 @@ export default function FeaturedProducts() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
           {[
-            { name: "Summer Collection", description: "Bright and colorful accessories for sunny days" },
-            { name: "Elegant Series", description: "Sophisticated pieces for special occasions" },
-            { name: "Everyday Essentials", description: "Must-have accessories for your daily outfits" },
+            { name: "Summer Collection", image:"https://img.freepik.com/free-photo/sunglasses-swimwear-straw-hat-summer-generated-by-ai_24640-81256.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740", description: "Bright and colorful accessories for sunny days" },
+            { name: "Elegant Series",image:"https://img.freepik.com/free-photo/ornate-jewelry-boxes-art-nouveau-style_23-2150975551.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740", description: "Sophisticated pieces for special occasions" },
+            { name: "Everyday Essentials",image:"https://img.freepik.com/free-photo/collection-beauty-care-products-with-pink-tones_23-2151005547.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740", description: "Must-have accessories for your daily outfits" },
           ].map((collection, i) => (
             <div
               key={i}
@@ -26,7 +26,7 @@ export default function FeaturedProducts() {
             >
               <div className="aspect-[4/5] overflow-hidden bg-gray-100">
                 <Image
-                  src={`/placeholder.svg?height=500&width=400`}
+                  src={collection.image || "/placeholder.svg"}
                   alt={collection.name}
                   width={400}
                   height={500}

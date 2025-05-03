@@ -4,18 +4,12 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
+import { products as pd } from "@/constants/product"
 
 export default function ProductShowcase() {
   const { addItem } = useCartStore()
 
-  const products = [
-    { id: 1, name: "Crystal Hair Clips", price: 12.99, tag: "Bestseller", category: "Hair" },
-    { id: 2, name: "Pearl Earrings", price: 18.99, tag: "New", category: "Earrings" },
-    { id: 3, name: "Butterfly Necklace", price: 24.99, tag: "Limited", category: "Necklaces" },
-    { id: 4, name: "Scrunchie Set", price: 9.99, tag: "", category: "Hair" },
-    { id: 5, name: "Beaded Bracelet", price: 14.99, tag: "Sale", category: "Bracelets" },
-    { id: 6, name: "Charm Anklet", price: 16.99, tag: "", category: "Anklets" },
-  ]
+  const products =pd.slice(0, 6)
 
   const handleAddToCart = (product: any) => {
     addItem({
@@ -26,7 +20,7 @@ export default function ProductShowcase() {
       image: `/placeholder.svg?height=400&width=400`,
     })
 
-    toast("Added to cart",{
+    toast("Added to cart", {
       description: `${product.name} has been added to your cart.`,
     })
   }
@@ -51,7 +45,7 @@ export default function ProductShowcase() {
             >
               <div className="aspect-square overflow-hidden bg-gray-100">
                 <Image
-                  src={`/placeholder.svg?height=400&width=400`}
+                  src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   width={400}
                   height={400}

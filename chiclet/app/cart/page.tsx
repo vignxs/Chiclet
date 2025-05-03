@@ -7,29 +7,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useCartStore } from "@/lib/store"
 
-// Sample cart items
-const initialCartItems = [
-  {
-    id: 1,
-    name: "Crystal Hair Clips",
-    price: 12.99,
-    color: "Silver",
-    quantity: 1,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-  {
-    id: 3,
-    name: "Butterfly Necklace",
-    price: 24.99,
-    color: "Gold",
-    quantity: 2,
-    image: "/placeholder.svg?height=100&width=100",
-  },
-]
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems)
+  const { items } = useCartStore()
+  const [cartItems, setCartItems] = useState(items)
   const { toast } = useToast()
 
   const updateQuantity = (id: number, newQuantity: number) => {

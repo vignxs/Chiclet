@@ -10,22 +10,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Filter, Search } from "lucide-react"
+import { products } from "@/constants/product"
 
 // Sample product data
-const allProducts = [
-  { id: 1, name: "Crystal Hair Clips", price: 12.99, tag: "Bestseller", category: "Hair" },
-  { id: 2, name: "Pearl Earrings", price: 18.99, tag: "New", category: "Earrings" },
-  { id: 3, name: "Butterfly Necklace", price: 24.99, tag: "Limited", category: "Necklaces" },
-  { id: 4, name: "Scrunchie Set", price: 9.99, tag: "", category: "Hair" },
-  { id: 5, name: "Beaded Bracelet", price: 14.99, tag: "Sale", category: "Bracelets" },
-  { id: 6, name: "Charm Anklet", price: 16.99, tag: "", category: "Anklets" },
-  { id: 7, name: "Floral Hair Pins", price: 11.99, tag: "New", category: "Hair" },
-  { id: 8, name: "Statement Rings Set", price: 19.99, tag: "Bestseller", category: "Rings" },
-  { id: 9, name: "Gemstone Studs", price: 22.99, tag: "", category: "Earrings" },
-  { id: 10, name: "Layered Necklace", price: 29.99, tag: "Limited", category: "Necklaces" },
-  { id: 11, name: "Velvet Scrunchies", price: 8.99, tag: "Sale", category: "Hair" },
-  { id: 12, name: "Charm Bracelet", price: 17.99, tag: "", category: "Bracelets" },
-]
+const allProducts =products
 
 const categories = ["All", "Earrings", "Necklaces", "Bracelets", "Hair", "Rings", "Anklets"]
 
@@ -228,7 +216,7 @@ export default function ShopPage() {
                     >
                       <div className="aspect-square overflow-hidden bg-gray-100 image-hover">
                         <Image
-                          src={`/placeholder.svg?height=400&width=400`}
+                          src={product.image || "/placeholder.svg"}
                           alt={product.name}
                           width={400}
                           height={400}

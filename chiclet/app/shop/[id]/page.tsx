@@ -9,76 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useCartStore } from "@/lib/store"
+import { products as allProducts } from "@/constants/product"
 
 // Sample product data
-const products = [
-  {
-    id: 1,
-    name: "Crystal Hair Clips",
-    price: 12.99,
-    tag: "Bestseller",
-    category: "Hair",
-    description:
-      "Elegant crystal hair clips that add a touch of sparkle to any hairstyle. Perfect for special occasions or everyday glamour.",
-    colors: ["Silver", "Gold", "Rose Gold"],
-    rating: 4.8,
-  },
-  {
-    id: 2,
-    name: "Pearl Earrings",
-    price: 18.99,
-    tag: "New",
-    category: "Earrings",
-    description:
-      "Classic pearl earrings with a modern twist. These versatile studs complement both casual and formal outfits.",
-    colors: ["White", "Cream", "Black"],
-    rating: 4.5,
-  },
-  {
-    id: 3,
-    name: "Butterfly Necklace",
-    price: 24.99,
-    tag: "Limited",
-    category: "Necklaces",
-    description: "Delicate butterfly pendant on a fine chain. This necklace symbolizes transformation and beauty.",
-    colors: ["Silver", "Gold"],
-    rating: 4.9,
-  },
-  {
-    id: 4,
-    name: "Scrunchie Set",
-    price: 9.99,
-    tag: "",
-    category: "Hair",
-    description:
-      "Set of 5 premium scrunchies in various colors and patterns. Gentle on hair while adding a stylish touch to your ponytail.",
-    colors: ["Multicolor"],
-    rating: 4.3,
-  },
-  {
-    id: 5,
-    name: "Beaded Bracelet",
-    price: 14.99,
-    tag: "Sale",
-    category: "Bracelets",
-    description:
-      "Handcrafted beaded bracelet featuring semi-precious stones. Each piece is unique and makes a perfect gift.",
-    colors: ["Blue", "Pink", "Green"],
-    rating: 4.7,
-  },
-  {
-    id: 6,
-    name: "Charm Anklet",
-    price: 16.99,
-    tag: "",
-    category: "Anklets",
-    description:
-      "Dainty anklet with small charms that catch the light as you move. Adjustable length for perfect fit.",
-    colors: ["Silver", "Gold"],
-    rating: 4.6,
-  },
-]
-
+const products = allProducts
 export default function ProductPage({ params }: { params: { id: string } }) {
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
@@ -105,7 +39,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       price: product.price,
       color: selectedColor || product.colors[0],
       quantity: Number.parseInt(quantity),
-      image: productImages[0],
+      image: product.image,
     })
 
     toast({
@@ -152,7 +86,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="space-y-4">
               <div className="aspect-square overflow-hidden rounded-lg border border-neutral-200 bg-gray-100 dark:border-neutral-800">
                 <Image
-                  src={productImages[activeImage] || "/placeholder.svg"}
+                  src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   width={600}
                   height={600}
@@ -363,7 +297,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   >
                     <div className="aspect-square overflow-hidden bg-gray-100 image-hover">
                       <Image
-                        src={`/placeholder.svg?height=300&width=300`}
+                        src={relatedProduct.image || "/placeholder.svg"}
                         alt={relatedProduct.name}
                         width={300}
                         height={300}

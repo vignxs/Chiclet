@@ -19,17 +19,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="!scroll-smooth">
+    <html lang="en" className="!scroll-smooth light">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <div className="flex flex-col min-h-screen">
+            <Navbar /> 
             <div className="container mx-auto px-4 py-4">
-              <Navbar />
+              {children}
             </div>
-            {children}
             <Toaster />
             <Footer />
           </div>
+
         </ThemeProvider>
       </body>
     </html>
