@@ -1,27 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import { useState, use } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 import { useCartStore } from "@/lib/store"
 import { products as allProducts } from "@/constants/product"
+import { toast } from "sonner"
 
-// Sample product data
 const products = allProducts
-export default function ProductPage({ params }: { params: { id: number } }) {
+
+type Params = {
+  id: string;
+};
+
+type PageProps = {
+  params: Promise<Params>;
+};
+
+export default function ProductPage({ params }: PageProps) {
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
   const [activeImage, setActiveImage] = useState(0)
-  const { toast } = useToast()
   const { addItem } = useCartStore()
 
-  // Find the product based on the ID from the URL
-  const productId = params.id
+  const productId = Number.parseInt(use(params).id);
   const product = products.find((p) => p.id === productId) || products[0]
 
   // Sample images for the product
@@ -42,15 +48,13 @@ export default function ProductPage({ params }: { params: { id: number } }) {
       image: product.image,
     })
 
-    toast({
-      title: "Added to cart",
+    toast("Added to cart",{
       description: `${product.name} (${selectedColor || product.colors[0]}) has been added to your cart.`,
     })
   }
 
   const handleAddToWishlist = () => {
-    toast({
-      title: "Added to wishlist",
+    toast("Added to wishlist",{
       description: `${product.name} has been added to your wishlist.`,
     })
   }

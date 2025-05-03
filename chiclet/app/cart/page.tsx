@@ -6,14 +6,13 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 import { useCartStore } from "@/lib/store"
+import { toast } from "sonner"
 
 
 export default function CartPage() {
   const { items } = useCartStore()
   const [cartItems, setCartItems] = useState(items)
-  const { toast } = useToast()
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return
@@ -24,8 +23,7 @@ export default function CartPage() {
   const removeItem = (id: number) => {
     setCartItems(cartItems.filter((item) => item.id !== id))
 
-    toast({
-      title: "Item removed",
+    toast("Item removed",{
       description: "The item has been removed from your cart.",
     })
   }
@@ -35,8 +33,7 @@ export default function CartPage() {
   const total = subtotal + shipping
 
   const handleCheckout = () => {
-    toast({
-      title: "Proceeding to checkout",
+    toast("Proceeding to checkout",{
       description: "This would normally redirect to a payment page.",
     })
   }
