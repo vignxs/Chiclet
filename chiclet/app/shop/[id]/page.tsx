@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, use } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -11,21 +11,24 @@ import { useToast } from "@/hooks/use-toast"
 import { useCartStore } from "@/lib/store"
 import { products as allProducts } from "@/constants/product"
 
-// Sample product data
 const products = allProducts
-type ProductPageParams = {
+
+type Params = {
   id: string;
 };
 
-export default function ProductPage({ params }: { params: ProductPageParams }) {
+type PageProps = {
+  params: Promise<Params>;
+};
+
+export default function ProductPage({ params }: PageProps) {
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
   const [activeImage, setActiveImage] = useState(0)
   const { toast } = useToast()
   const { addItem } = useCartStore()
 
-  // Find the product based on the ID from the URL
-  const productId = Number.parseInt(params.id)
+  const productId = Number.parseInt(use(params).id);
   const product = products.find((p) => p.id === productId) || products[0]
 
   // Sample images for the product
