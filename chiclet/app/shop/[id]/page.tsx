@@ -13,7 +13,7 @@ import { products as allProducts } from "@/constants/product"
 
 // Sample product data
 const products = allProducts
-export default function ProductPage({ params }: { params: { id: number } }) {
+export default function ProductPage({ params }: { params: { id: string } }) {
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
   const [activeImage, setActiveImage] = useState(0)
@@ -21,7 +21,7 @@ export default function ProductPage({ params }: { params: { id: number } }) {
   const { addItem } = useCartStore()
 
   // Find the product based on the ID from the URL
-  const productId = params.id
+  const productId = Number.parseInt(params.id)
   const product = products.find((p) => p.id === productId) || products[0]
 
   // Sample images for the product
