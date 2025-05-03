@@ -4,20 +4,20 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
-import { products as pd } from "@/constants/product"
+import { products as pd, Product } from "@/constants/product"
 
 export default function ProductShowcase() {
   const { addItem } = useCartStore()
 
   const products =pd.slice(0, 6)
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       quantity: 1,
-      image: `/placeholder.svg?height=400&width=400`,
+      image: product.image,
     })
 
     toast("Added to cart", {

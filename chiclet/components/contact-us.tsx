@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { MapPin, Phone, Mail, Clock } from "lucide-react"
+// import { MapPin, Phone, Mail, Clock } from "lucide-react"
 
 export default function ContactUs() {
   return (
@@ -13,7 +13,7 @@ export default function ContactUs() {
           </div>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Contact Us</h2>
           <p className="text-gray-500 md:text-lg max-w-[700px] mx-auto">
-            Have questions about our products or need assistance? We're here to help!
+            Have questions about our products or need assistance? We&apos;re here to help!
           </p>
         </div>
 

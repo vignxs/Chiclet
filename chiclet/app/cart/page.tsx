@@ -49,7 +49,7 @@ export default function CartPage() {
             <ShoppingBag className="h-16 w-16 mx-auto mb-6 text-gray-300" />
             <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
             <p className="text-gray-500 mb-8 max-w-md mx-auto">
-              Looks like you haven't added any items to your cart yet. Browse our collection to find something you'll
+              Looks like you haven&apos;t added any items to your cart yet. Browse our collection to find something you&apos;ll
               love!
             </p>
             <Link href="/shop">
