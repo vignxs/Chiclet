@@ -179,10 +179,10 @@ export default function HeroSection() {
               <motion.div
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-30 z-30"
                 animate={{
-                  backgroundPosition: ["200%", "-200%"],
+                  backgroundPosition: ["200% 200%", "-200% -200%"],
                 }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3, ease: "easeInOut" }}
-                style={{ backgroundSize: "200%" }}
+                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 10, ease: "easeInOut" }}
+                style={{ backgroundSize: "200% 200%" }}
               />
             </div>
           </motion.div>
