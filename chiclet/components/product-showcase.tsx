@@ -26,7 +26,7 @@ export default function ProductShowcase() {
   }
 
   return (
-    <section className="w-full py-12 md:py-24 bg-gray-50">
+    <section className="w-full py-12 md:py-16 mt-20 rounded-2xl bg-pink-70">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">

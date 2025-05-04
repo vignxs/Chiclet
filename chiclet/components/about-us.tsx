@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export default function AboutUs() {
   return (
-    <section id="about" className="w-full py-16 md:py-24 bg-gray-50 scroll-mt-20">
+    <section id="about" className="w-full py-16 md:py-24 mt-8 rounded-2xl bg-gray-50 scroll-mt-20">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div className="order-2 md:order-1">
