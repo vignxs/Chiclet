@@ -46,6 +46,7 @@ export const useAuthStore = create<AuthState>()(
         const user = demoUsers.find((u) => u.email === email && u.password === password)
 
         if (user) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { password: _, ...userWithoutPassword } = user
           set({
             user: userWithoutPassword,
@@ -56,7 +57,8 @@ export const useAuthStore = create<AuthState>()(
 
         return false
       },
-      signup: async (name, email, password) => {
+      //
+      signup: async (name, email, _password) => {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 800))
 

@@ -48,6 +48,7 @@ export default function SignUpPage() {
         })
       }
     } catch (error) {
+      console.error("Sign in error:", error)
       toast("Sign up failed",{
         description: "An error occurred. Please try again.",
       })

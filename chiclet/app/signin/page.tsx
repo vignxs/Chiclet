@@ -38,6 +38,7 @@ export default function SignInPage() {
         })
       }
     } catch (error) {
+      console.error("Sign in error:", error)
       toast("Sign in failed",{
         description: "An error occurred. Please try again.",
       })
