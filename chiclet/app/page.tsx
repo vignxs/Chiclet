@@ -46,7 +46,7 @@ export default function Home() {
                 </h1>
                 <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-2xl">
                   Discover our curated collection of trendy accessories that add the perfect finishing touch to every
-                  outfit.
+                  outfit. 
                 </p>
               </div>
 
@@ -67,8 +67,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex-1 mt-8 md:mt-0">
-              <div className="relative w-full aspect-square max-w-md mx-auto">
+            <div className="relative flex items-center justify-center">
+              <div className="relative w-full max-w-md aspect-square rounded-full overflow-hidden bg-[#e6f7ff] p-8">
                 <div className="absolute inset-0 bg-pink-100 rounded-full opacity-20"></div>
                 <div className="absolute inset-4 bg-pink-200 rounded-full opacity-20"></div>
                 <Image
@@ -79,6 +79,8 @@ export default function Home() {
                 />
               </div>
             </div>
+
+
           </div>
         </div>
       </section>
