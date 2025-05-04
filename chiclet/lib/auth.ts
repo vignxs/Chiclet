@@ -57,7 +57,7 @@ export const useAuthStore = create<AuthState>()(
 
         return false
       },
-      //
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       signup: async (name, email, _password) => {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 800))
