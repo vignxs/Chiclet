@@ -137,9 +137,7 @@ export default function Footer() {
             >
               Chiclet
             </Link>
-            <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} Chiclet. All rights reserved.
-            </p>
+            <p className="text-sm text-gray-500">© {new Date().getFullYear()} Chiclet. All rights reserved.</p>
           </div>
         </div>
 
