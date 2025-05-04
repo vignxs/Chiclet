@@ -36,7 +36,7 @@ export default function HeroSection() {
   if (!mounted) return null
 
   return (
-    <section className="relative w-full py-20 md:py-32 overflow-hidden bg-gradient-to-b from-white to-pink-50">
+    <section className="relative w-full py-20 md:py-32 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-pink-50">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-pink-100 opacity-30 blur-3xl"></div>
