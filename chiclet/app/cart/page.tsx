@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -9,36 +7,39 @@ import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
 
-
 export default function CartPage() {
-  const { items } = useCartStore()
-  const [cartItems, setCartItems] = useState(items)
+  const { items, removeItem, updateQuantity, clearCart } = useCartStore()
 
-  const updateQuantity = (id: number, newQuantity: number) => {
+  const handleUpdateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return
-
-    setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)))
+    updateQuantity(id, newQuantity)
   }
 
-  const removeItem = (id: number) => {
-    setCartItems(cartItems.filter((item) => item.id !== id))
-
+  const handleRemoveItem = (id: number) => {
+    removeItem(id)
     toast("Item removed",{
       description: "The item has been removed from your cart.",
     })
   }
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const shipping = subtotal > 50 ? 0 : 5.99
   const total = subtotal + shipping
 
   const handleCheckout = () => {
-    toast("Proceeding to checkout",{
+    toast( "Proceeding to checkout",{
       description: "This would normally redirect to a payment page.",
     })
   }
 
-  if (cartItems.length === 0) {
+  const handleClearCart = () => {
+    clearCart()
+    toast("Cart cleared",{
+      description: "All items have been removed from your cart.",
+    })
+  }
+
+  if (items.length === 0) {
     return (
       <main className="flex min-h-screen flex-col">
         <section className="w-full py-12 md:py-24 flex flex-col items-center justify-center animate-fadeIn">
@@ -46,7 +47,7 @@ export default function CartPage() {
             <ShoppingBag className="h-16 w-16 mx-auto mb-6 text-gray-300" />
             <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
             <p className="text-gray-500 mb-8 max-w-md mx-auto">
-              Looks like you haven&apos;t added any items to your cart yet. Browse our collection to find something you&apos;ll
+              Looks like you haven't added any items to your cart yet. Browse our collection to find something you'll
               love!
             </p>
             <Link href="/shop">
@@ -81,7 +82,7 @@ export default function CartPage() {
               </div>
 
               {/* Cart Items */}
-              {cartItems.map((item) => (
+              {items.map((item) => (
                 <div key={item.id} className="grid md:grid-cols-12 gap-4 py-4 border-b items-center animate-slideIn">
                   {/* Product */}
                   <div className="md:col-span-6 flex items-center space-x-4">
@@ -98,10 +99,10 @@ export default function CartPage() {
                       <Link href={`/shop/${item.id}`} className="font-medium hover:underline">
                         {item.name}
                       </Link>
-                      <div className="text-sm text-gray-500">Color: {item.color}</div>
+                      {item.color && <div className="text-sm text-gray-500">Color: {item.color}</div>}
                       <button
                         className="text-sm text-red-500 hover:text-red-700 flex items-center mt-1 md:hidden"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveItem(item.id)}
                       >
                         <Trash2 className="h-3 w-3 mr-1" />
                         Remove
@@ -120,14 +121,14 @@ export default function CartPage() {
                     <div className="flex items-center border border-neutral-200 rounded-md dark:border-neutral-800">
                       <button
                         className="px-2 py-1 hover:bg-gray-100"
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
                       >
                         <Minus className="h-3 w-3" />
                       </button>
                       <span className="px-3 py-1">{item.quantity}</span>
                       <button
                         className="px-2 py-1 hover:bg-gray-100"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -140,7 +141,7 @@ export default function CartPage() {
                     <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
                     <button
                       className="text-gray-400 hover:text-red-500 ml-4 hidden md:block"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => handleRemoveItem(item.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -158,7 +159,7 @@ export default function CartPage() {
                 <Button
                   variant="ghost"
                   className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                  onClick={() => setCartItems([])}
+                  onClick={handleClearCart}
                 >
                   Clear Cart
                 </Button>

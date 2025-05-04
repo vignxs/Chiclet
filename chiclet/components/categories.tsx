@@ -25,7 +25,7 @@ export default function Categories() {
           {categories.map((category, i) => (
             <Link
               key={i}
-              href="#"
+              href="/shop"
               className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-md"
             >
               <div className="aspect-square overflow-hidden bg-gray-100">

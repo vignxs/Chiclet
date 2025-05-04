@@ -19,8 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="!scroll-smooth light">
-      
+    <html lang="en" className="scroll-smooth light" style={{ scrollBehavior: "smooth", colorScheme: "light" }}>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <div className="flex flex-col min-h-screen">
@@ -31,7 +30,6 @@ export default function RootLayout({
             <Toaster />
             <Footer />
           </div>
-
         </ThemeProvider>
       </body>
     </html>

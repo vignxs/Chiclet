@@ -35,7 +35,7 @@ export default function AboutUs() {
 
             <p className="text-gray-600">
               Each Chiclet accessory is thoughtfully designed to add that perfect finishing touch to any outfit. We
-              believe that accessories aren&apos;t just add-ons—they&apos;re essential elements of self-expression that can
+              believe that accessories aren't just add-ons—they're essential elements of self-expression that can
               transform both your look and your confidence.
             </p>
 
