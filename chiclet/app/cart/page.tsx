@@ -6,10 +6,29 @@ import { Input } from "@/components/ui/input"
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import { useAddressStore } from "@/lib/address-store"
+import { useAuthStore } from "@/lib/auth"
+import { useOrdersStore } from "@/lib/orders"
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, clearCart } = useCartStore()
 
+  const { items, removeItem, updateQuantity, fetchCart,  clearCart } = useCartStore()
+  const { user, isAuthenticated } = useAuthStore()
+  const { addOrder } = useOrdersStore()
+  const { getAddressesByUserId } = useAddressStore()
+  const router = useRouter()
+
+  const [isCheckoutConfirmOpen, setIsCheckoutConfirmOpen] = useState(false)
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null)
+  const [isAddressSheetOpen, setIsAddressSheetOpen] = useState(false)
+
+  // useEffect(() => {
+  //   fetchCart()
+  // }, [fetchCart])
+
+  console.log("Cart items:", items)
   const handleUpdateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return
     updateQuantity(id, newQuantity)
@@ -17,24 +36,28 @@ export default function CartPage() {
 
   const handleRemoveItem = (id: number) => {
     removeItem(id)
-    toast("Item removed",{
+    toast("Item removed", {
       description: "The item has been removed from your cart.",
     })
   }
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = items.reduce(
+    (sum, item) => sum + (item.price ?? 0) * item.quantity,
+    0
+  );
+  
   const shipping = subtotal > 50 ? 0 : 5.99
   const total = subtotal + shipping
 
   const handleCheckout = () => {
-    toast( "Proceeding to checkout",{
+    toast("Proceeding to checkout", {
       description: "This would normally redirect to a payment page.",
     })
   }
 
   const handleClearCart = () => {
     clearCart()
-    toast("Cart cleared",{
+    toast("Cart cleared", {
       description: "All items have been removed from your cart.",
     })
   }
@@ -96,7 +119,7 @@ export default function CartPage() {
                       />
                     </div>
                     <div>
-                      <Link href={`/shop/${item.id}`} className="font-medium hover:underline">
+                      <Link href={`/shop/${item.product_id}`} className="font-medium hover:underline">
                         {item.name}
                       </Link>
                       {item.color && <div className="text-sm text-gray-500">Color: {item.color}</div>}
@@ -112,7 +135,7 @@ export default function CartPage() {
 
                   {/* Price */}
                   <div className="md:col-span-2 text-center">
-                    <div className="md:hidden text-sm text-gray-500">Price:</div>${item.price.toFixed(2)}
+                    <div className="md:hidden text-sm text-gray-500">Price:</div>${item.price}
                   </div>
 
                   {/* Quantity */}

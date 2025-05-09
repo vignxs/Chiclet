@@ -8,10 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
 import { useCartStore } from "@/lib/store"
-import { products as allProducts } from "@/constants/product"
 import { toast } from "sonner"
+import { useProductStore } from "@/lib/productStore"
 
-const products = allProducts
 
 type Params = {
   id: string;
@@ -22,6 +21,7 @@ type PageProps = {
 };
 
 export default function ProductPage({ params }: PageProps) {
+  const { products } = useProductStore();
   const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
   const [activeImage, setActiveImage] = useState(0)
@@ -29,6 +29,9 @@ export default function ProductPage({ params }: PageProps) {
 
   const productId = Number.parseInt(use(params).id);
   const product = products.find((p) => p.id === productId) || products[0]
+
+  console.log("Product:", product);
+
 
   // Sample images for the product
   const productImages = [
@@ -39,8 +42,18 @@ export default function ProductPage({ params }: PageProps) {
   ]
 
   const handleAddToCart = () => {
+    console.log("Adding to cart:", {
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      color: selectedColor || product.colors[0],
+      quantity: Number.parseInt(quantity),
+      image: product.image,
+    });
+
+
     addItem({
-      id: product.id,
+      product_id: product.id,
       name: product.name,
       price: product.price,
       color: selectedColor || product.colors[0],
@@ -48,14 +61,8 @@ export default function ProductPage({ params }: PageProps) {
       image: product.image,
     })
 
-    toast("Added to cart",{
+    toast("Added to cart", {
       description: `${product.name} (${selectedColor || product.colors[0]}) has been added to your cart.`,
-    })
-  }
-
-  const handleAddToWishlist = () => {
-    toast("Added to wishlist",{
-      description: `${product.name} has been added to your wishlist.`,
     })
   }
 
@@ -102,9 +109,8 @@ export default function ProductPage({ params }: PageProps) {
                 {productImages.map((image, index) => (
                   <button
                     key={index}
-                    className={`aspect-square overflow-hidden rounded-md border ${
-                      activeImage === index ? "ring-2 ring-black" : ""
-                    }`}
+                    className={`aspect-square overflow-hidden rounded-md border ${activeImage === index ? "ring-2 ring-black" : ""
+                      }`}
                     onClick={() => setActiveImage(index)}
                   >
                     <Image
@@ -133,9 +139,8 @@ export default function ProductPage({ params }: PageProps) {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-5 w-5 ${
-                      i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                    }`}
+                    className={`h-5 w-5 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                      }`}
                   />
                 ))}
                 <span className="ml-2 text-sm text-gray-500">{product.rating} (120 reviews)</span>
@@ -152,9 +157,8 @@ export default function ProductPage({ params }: PageProps) {
                     {product.colors.map((color) => (
                       <button
                         key={color}
-                        className={`px-3 py-1 rounded-full border text-sm ${
-                          selectedColor === color ? "bg-black text-white" : "hover:bg-gray-100"
-                        }`}
+                        className={`px-3 py-1 rounded-full border text-sm ${selectedColor === color ? "bg-black text-white" : "hover:bg-gray-100"
+                          }`}
                         onClick={() => setSelectedColor(color)}
                       >
                         {color}
@@ -189,15 +193,7 @@ export default function ProductPage({ params }: PageProps) {
                   <ShoppingBag className="mr-2 h-5 w-5" />
                   Add to Cart
                 </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-black hover:bg-gray-100 transition-transform duration-300 hover:scale-105"
-                  onClick={handleAddToWishlist}
-                >
-                  <Heart className="mr-2 h-5 w-5" />
-                  Wishlist
-                </Button>
+               
                 <Button size="icon" variant="outline" className="border-black hover:bg-gray-100">
                   <Share2 className="h-5 w-5" />
                 </Button>
