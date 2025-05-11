@@ -11,7 +11,7 @@ import { ShoppingBag, Package, CheckCircle, XCircle, Loader2 } from "lucide-reac
 
 export default function OrdersPage() {
   const { user, isAuthenticated } = useAuthStore()
-  const { getOrdersByUserId } = useOrdersStore()
+  const { getOrdersByUserId, fetchOrders } = useOrdersStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
@@ -24,9 +24,12 @@ export default function OrdersPage() {
 
     // Get orders for the current user
     if (user) {
-      const userOrders = getOrdersByUserId(user.id)
-      setOrders(userOrders)
-      setIsLoading(false)
+      fetchOrders().then(() => {
+        const userOrders = getOrdersByUserId(user.id)
+        console.log("Fetched orders:", userOrders)
+        setOrders(userOrders)
+        setIsLoading(false)
+      })
     } else {
       setIsLoading(false)
     }

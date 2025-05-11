@@ -1,54 +1,81 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { useAuthStore } from "@/lib/auth"
-import { useOrdersStore, type Order } from "@/lib/orders"
+import { OrderTimelineEntry, useOrdersStore, type Order } from "@/lib/orders"
 import { OrderStatus } from "@/components/order-status"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, ExternalLink, Loader2, Package } from "lucide-react"
 import { toast } from "sonner"
+import OrderTimeline from "@/components/order-timeline"
 
-export default function OrderDetailsPage({ params }: { params: { id: string } }) {
+type Params = {
+  id: string;
+};
+
+type PageProps = {
+  params: Promise<Params>;
+};
+
+export default function OrderDetailsPage({ params }: PageProps) {
   const { user, isAuthenticated } = useAuthStore()
   const { orders, cancelOrder } = useOrdersStore()
   const [order, setOrder] = useState<Order | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
+  const orderId = use(params).id;
+  const { getOrderTimelineByOrderId } = useOrdersStore()
+  const [ordersTimeline, setOrdersTimeline] = useState<OrderTimelineEntry[] | null>([]);
+
+  console.log("Order ID from params:", orderId)
+  console.log("Orders from store:", orders)
+
   useEffect(() => {
-    // If not authenticated, redirect to login
-    if (!isAuthenticated && !isLoading) {
-      router.push("/signin")
-    }
+    const fetchData = async () => {
+      const data = await getOrderTimelineByOrderId(orderId);
+      console.log("Fetched data:", data);
+      setOrdersTimeline(data);
+    };
 
-    // Find the order by ID
-    if (params.id) {
-      const foundOrder = orders.find((o) => o.id === params.id)
+    console.log("Authenticated user:", isAuthenticated);
+    const processOrder = async () => {
+      // if (!isAuthenticated) {
+      //   router.push("/signin");
+      //   return;
+      // }
 
-      // If order exists and belongs to the current user
-      if (foundOrder && user && foundOrder.userId === user.id) {
-        setOrder(foundOrder)
-      } else if (!isLoading) {
-        // Order not found or doesn't belong to user
-        router.push("/orders")
+      if (orderId) {
+        const foundOrder = orders.find((o) => o.id === orderId);
+        if (foundOrder && user && foundOrder.user_id === user.id) {
+          setOrder(foundOrder);
+
+          console.log("Found order:", foundOrder);
+          await fetchData();
+        } else {
+          router.push("/orders");
+          return;
+        }
       }
-    }
 
-    setIsLoading(false)
-  }, [params.id, orders, user, isAuthenticated, router, isLoading])
+      setIsLoading(false);
+    };
+
+    processOrder();
+  }, [orderId, orders, user, isAuthenticated, router]);
 
   const handleCancelOrder = () => {
     if (order && order.status === "processing") {
       cancelOrder(order.id)
-      setOrder({ ...order, status: "cancelled", updatedAt: new Date().toISOString() })
-      toast( "Order cancelled",{
+      setOrder({ ...order, status: "cancelled", updated_at: new Date().toISOString() })
+      toast("Order cancelled", {
         description: `Order #${order.id} has been cancelled.`,
       })
     } else {
-      toast("Cannot cancel order",{
+      toast("Cannot cancel order", {
         description: `Orders that have been ${order?.status} cannot be cancelled.`,
       })
     }
@@ -91,7 +118,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Order #{order.id}</h1>
-              <p className="text-gray-500 mt-1">Placed on {formatDate(order.createdAt)}</p>
+              <p className="text-gray-500 mt-1">Placed on {formatDate(order.created_at)}</p>
             </div>
             <OrderStatus status={order.status} className="text-sm px-3 py-1" />
           </div>
@@ -104,8 +131,8 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-4">Order Items</h2>
                 <div className="divide-y">
-                  {order.items.map((item) => (
-                    <div key={item.id} className="py-4 flex items-start">
+                  {order.order_items.map((item) => (
+                    <div key={item.product_id} className="py-4 flex items-start">
                       <div className="h-20 w-20 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
                         <Image
                           src={item.image || "/placeholder.svg"}
@@ -134,23 +161,23 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
             <div className="bg-white rounded-lg border overflow-hidden">
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <p className="font-medium">{order.shippingAddress.name}</p>
                   <p>{order.shippingAddress.street}</p>
                   <p>
                     {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zip}
                   </p>
                   <p>{order.shippingAddress.country}</p>
-                </div>
+                </div> */}
 
-                {order.trackingNumber && (
+                {order.tracking_number && (
                   <div className="mt-4 pt-4 border-t">
                     <h3 className="font-medium mb-2">Tracking Information</h3>
                     <div className="flex items-center">
-                      <p className="text-sm">Tracking Number: {order.trackingNumber}</p>
+                      <p className="text-sm">Tracking Number: {order.tracking_number}</p>
                       <Button variant="ghost" size="sm" asChild className="ml-2">
                         <a
-                          href={`https://example.com/track/${order.trackingNumber}`}
+                          href={`https://example.com/track/${order.tracking_number}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -166,79 +193,8 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
             </div>
 
             {/* Order Timeline */}
-            <div className="bg-white rounded-lg border overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Order Timeline</h2>
-                <div className="space-y-4">
-                  <div className="flex">
-                    <div className="flex flex-col items-center mr-4">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <div className="w-0.5 h-full bg-gray-200"></div>
-                    </div>
-                    <div>
-                      <p className="font-medium">Order Placed</p>
-                      <p className="text-sm text-gray-500">{formatDate(order.createdAt)}</p>
-                    </div>
-                  </div>
-
-                  {order.status !== "processing" && order.status !== "cancelled" && (
-                    <div className="flex">
-                      <div className="flex flex-col items-center mr-4">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <div className="w-0.5 h-full bg-gray-200"></div>
-                      </div>
-                      <div>
-                        <p className="font-medium">Order Processed</p>
-                        <p className="text-sm text-gray-500">
-                          {formatDate(new Date(new Date(order.createdAt).getTime() + 86400000).toISOString())}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {(order.status === "shipped" || order.status === "delivered") && (
-                    <div className="flex">
-                      <div className="flex flex-col items-center mr-4">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <div className="w-0.5 h-full bg-gray-200"></div>
-                      </div>
-                      <div>
-                        <p className="font-medium">Order Shipped</p>
-                        <p className="text-sm text-gray-500">
-                          {formatDate(new Date(new Date(order.createdAt).getTime() + 172800000).toISOString())}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {order.status === "delivered" && (
-                    <div className="flex">
-                      <div className="flex flex-col items-center mr-4">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      </div>
-                      <div>
-                        <p className="font-medium">Order Delivered</p>
-                        <p className="text-sm text-gray-500">{formatDate(order.updatedAt)}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {order.status === "cancelled" && (
-                    <div className="flex">
-                      <div className="flex flex-col items-center mr-4">
-                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      </div>
-                      <div>
-                        <p className="font-medium">Order Cancelled</p>
-                        <p className="text-sm text-gray-500">{formatDate(order.updatedAt)}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            <OrderTimeline ordersTimeline={ordersTimeline} />
           </div>
-
           {/* Order Summary */}
           <div className="md:col-span-1">
             <div className="bg-white rounded-lg border overflow-hidden sticky top-24">
@@ -248,7 +204,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Subtotal</span>
-                    <span>${order.items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</span>
+                    <span>${order.order_items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Shipping</span>
@@ -286,6 +242,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </main>

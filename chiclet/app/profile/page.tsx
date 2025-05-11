@@ -14,7 +14,7 @@ import { Loader2, Package, Plus, Settings, User } from "lucide-react"
 
 export default function ProfilePage() {
   const { user, isAuthenticated } = useAuthStore()
-  const { getAddressesByUserId } = useAddressStore()
+  const { getAddressesByUserId, fetchAddresses } = useAddressStore()
   const [addresses, setAddresses] = useState<Address[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showAddressForm, setShowAddressForm] = useState(false)
@@ -29,9 +29,12 @@ export default function ProfilePage() {
 
     // Get addresses for the current user
     if (user) {
-      const userAddresses = getAddressesByUserId(user.id)
-      setAddresses(userAddresses)
-      setIsLoading(false)
+      fetchAddresses().then(() => {
+        const userAddresses = getAddressesByUserId(user.id)
+        console.log("Fetched addresses:", userAddresses)
+        setAddresses(userAddresses)
+        setIsLoading(false)
+      })
     } else {
       setIsLoading(false)
     }
