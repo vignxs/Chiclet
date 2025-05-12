@@ -50,9 +50,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
-  if (!isAuthorized) {
-    return null // Will redirect in useEffect
-  }
+  // if (!isAuthorized) {
+  //   return null // Will redirect in useEffect
+  // }
 
   return (
     <div className="min-h-screen flex">

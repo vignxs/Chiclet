@@ -4,7 +4,6 @@ import { useState } from "react"
 import { useProductsStore, type Product } from "@/lib/products"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/hooks/use-toast"
 import {
   Table,
   TableBody,
@@ -24,6 +23,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Edit, Trash2, Search } from 'lucide-react'
+import { toast } from "sonner"
 
 interface ProductListProps {
   onEdit: (product: Product) => void
@@ -33,7 +33,6 @@ export function ProductList({ onEdit }: ProductListProps) {
   const { products, deleteProduct } = useProductsStore()
   const [searchTerm, setSearchTerm] = useState("")
   const [productToDelete, setProductToDelete] = useState<Product | null>(null)
-  const { toast } = useToast()
 
   const handleDeleteClick = (product: Product) => {
     setProductToDelete(product)
@@ -42,8 +41,7 @@ export function ProductList({ onEdit }: ProductListProps) {
   const handleConfirmDelete = () => {
     if (productToDelete) {
       deleteProduct(productToDelete.id)
-      toast({
-        title: "Product deleted",
+      toast("Product deleted",{
         description: `${productToDelete.name} has been successfully deleted.`,
       })
       setProductToDelete(null)
