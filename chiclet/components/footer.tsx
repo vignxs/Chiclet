@@ -133,11 +133,11 @@ export default function Footer() {
           <div className="text-center">
             <Link
               href="/"
-              className="inline-block font-extrabold text-[100px] sm:text-[150px] md:text-[160px] lg:text-[240px] xl:text-[300px] 2xl:text-[350px] leading-none tracking-tight mb-4"
+              className="inline-block font-extrabold text-[60px] sm:text-[50px] md:text-[120px] lg:text-[160px] xl:text-[200px] 2xl:text-[220px] leading-none tracking-tight mb-4"
             >
-              Chiclet
+              LPR Designs
             </Link>
-            <p className="text-sm text-gray-500">© {new Date().getFullYear()} Chiclet. All rights reserved.</p>
+            <p className="text-sm text-gray-500">© {new Date().getFullYear()} LPR Designs. All rights reserved.</p>
           </div>
         </div>
 
