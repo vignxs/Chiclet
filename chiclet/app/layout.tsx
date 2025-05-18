@@ -9,8 +9,8 @@ import { Toaster } from "@/components/ui/sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Chiclet - Girls Accessories Shop",
-  description: "Discover trendy accessories for girls at Chiclet",
+  title: "LPR Designs - Girls Accessories Shop",
+  description: "Discover trendy accessories for girls at LPR Designs",
 }
 
 export default function RootLayout({

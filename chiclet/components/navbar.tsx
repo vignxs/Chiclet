@@ -54,7 +54,7 @@ export default function Navbar() {
       >
         <div className="flex h-14 items-center justify-between px-6">
           <Link href="/" className="font-bold text-2xl">
-            Chiclet
+            LPR Designs
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">

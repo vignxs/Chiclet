@@ -28,7 +28,7 @@ export default function HeroSection() {
       text: "with",
     },
     {
-      text: "Chiclet",
+      text: "LPR",
       className: "text-pink-400",
     },
   ]
