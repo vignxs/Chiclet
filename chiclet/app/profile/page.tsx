@@ -22,6 +22,8 @@ export default function ProfilePage() {
   const router = useRouter()
 
   useEffect(() => {
+
+    
     // If not authenticated, redirect to login
     if (!isAuthenticated && !isLoading) {
       router.push("/signin")

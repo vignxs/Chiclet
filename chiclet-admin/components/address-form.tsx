@@ -7,8 +7,8 @@ import { useAddressStore, type Address } from "@/lib/address-store"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useToast } from "@/hooks/use-toast"
 import { X } from "lucide-react"
-import { toast } from "sonner"
 
 interface AddressFormProps {
   userId: string
@@ -28,6 +28,7 @@ export function AddressForm({ userId, editAddress, onCancel, onSave }: AddressFo
   })
 
   const { addAddress, updateAddress } = useAddressStore()
+  const { toast } = useToast()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -39,8 +40,10 @@ export function AddressForm({ userId, editAddress, onCancel, onSave }: AddressFo
 
     // Validate form
     if (!formData.name || !formData.street || !formData.city || !formData.state || !formData.zip || !formData.country) {
-      toast( "Missing information",{
+      toast({
+        title: "Missing information",
         description: "Please fill in all fields.",
+        variant: "destructive",
       })
       return
     }
@@ -48,13 +51,15 @@ export function AddressForm({ userId, editAddress, onCancel, onSave }: AddressFo
     if (editAddress) {
       // Update existing address
       updateAddress(editAddress.id, formData)
-      toast("Address updated",{
+      toast({
+        title: "Address updated",
         description: "Your address has been successfully updated.",
       })
     } else {
       // Add new address
       addAddress(userId, formData)
-      toast("Address added",{
+      toast({
+        title: "Address added",
         description: "Your new address has been successfully added.",
       })
     }

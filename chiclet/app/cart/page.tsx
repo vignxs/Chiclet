@@ -15,6 +15,7 @@ import { CheckoutConfirmation } from "@/components/checkout-confirmation"
 import { AddressSelector } from "@/components/address-selector"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { toast } from "sonner"
+import { loadRazorpay } from "@/lib/utils"
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart } = useCartStore()
@@ -71,52 +72,89 @@ export default function CartPage() {
     if (!isAuthenticated || !user || selectedAddressId === null) {
       toast("Cannot complete checkout", {
         description: "Please sign in and select a shipping address.",
-      })
-      return
+      });
+      return;
     }
 
-    const addresses = getAddressesByUserId(user.id)
-    const selectedAddress = addresses.find((address) => address.id === selectedAddressId)
+    const res = await fetch('/api/createorder', {
+      method: 'POST',
+      body: JSON.stringify({ amount: 499, currency: 'INR' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    if (!selectedAddress) {
-      toast("Address not found", {
-        description: "Please select a valid shipping address.",
-      })
-      return
+    const data = await res.json();
+
+    const razorpayLoaded = await loadRazorpay();
+    if (!razorpayLoaded) {
+      alert('Razorpay SDK failed to load');
+      return;
     }
 
-    // Create order
-    const order = await addOrder(
-      user.id,
-      items.map((item) => ({
-        id: item.id,
-        product_id: item.product_id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        image: item.image || "/placeholder.svg",
-      })),
-      selectedAddressId
-    )
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      amount: data.amount,
+      currency: data.currency,
+      name: 'Your Store Name',
+      description: 'Test Transaction',
+      order_id: data.id,
+      handler: async function (response: any) {
+        // ✅ Proceed ONLY after successful payment
+        const addresses = getAddressesByUserId(user.id);
+        const selectedAddress = addresses.find((address) => address.id === selectedAddressId);
 
-    if (!order) {
-      toast("Failed to place order", {
-        description: "Something went wrong. Please try again.",
-      })
-      return
-    }
+        if (!selectedAddress) {
+          toast("Address not found", {
+            description: "Please select a valid shipping address.",
+          });
+          return;
+        }
 
-    // Clear cart
-    clearCart()
+        const order = await addOrder(
+          user.id,
+          items.map((item) => ({
+            id: item.id,
+            product_id: item.product_id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image || "/placeholder.svg",
+          })),
+          selectedAddressId,
+          response.razorpay_payment_id,
 
-    // Show success message
-    toast("Order placed successfully!", {
-      description: `Your order #${order.id} has been placed.`,
-    })
+        );
 
-    // Redirect to order confirmation
-    router.push(`/orders/${order.id}`)
-  }
+        if (!order) {
+          toast("Failed to place order", {
+            description: "Something went wrong. Please try again.",
+          });
+          return;
+        }
+
+        clearCart();
+
+        toast("Order placed successfully!", {
+          description: `Your order #${order.id} has been placed.`,
+        });
+
+        router.push(`/orders/${order.id}`);
+      },
+      prefill: {
+        name: 'Vignesh',
+        email: 'vignesh@example.com',
+        contact: '9000090000',
+      },
+      notes: {
+        address: 'Test address',
+      },
+      theme: {
+        color: '#74347c',
+      },
+    };
+
+    const paymentObject = new (window as any).Razorpay(options);
+    paymentObject.open();
+  };
 
   const handleClearCart = () => {
     clearCart()

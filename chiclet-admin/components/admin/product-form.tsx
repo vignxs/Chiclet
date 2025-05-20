@@ -62,7 +62,7 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
 
     // Validate form
     if (!formData.name || !formData.description || !formData.price || !formData.category) {
-      toast("Missing information",{
+      toast("Missing information", {
         description: "Please fill in all required fields.",
       })
       return
@@ -73,14 +73,14 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
     const stock = Number.parseInt(formData.stock)
 
     if (isNaN(price) || price <= 0) {
-      toast("Invalid price",{
+      toast("Invalid price", {
         description: "Please enter a valid price greater than 0.",
       })
       return
     }
 
     if (isNaN(stock) || stock < 0) {
-      toast("Invalid stock",{
+      toast("Invalid stock", {
         description: "Please enter a valid stock value (0 or greater).",
       })
       return
@@ -90,7 +90,7 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
     const colors = formData.colors.filter((color) => color.trim() !== "")
 
     if (colors.length === 0) {
-      toast("Missing colors",{
+      toast("Missing colors", {
         description: "Please add at least one color option.",
       })
       return
@@ -108,7 +108,7 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
         colors,
         stock,
       })
-      toast("Product updated",{
+      toast("Product updated", {
         description: "Your product has been successfully updated.",
       })
     } else {
@@ -123,7 +123,7 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
         colors,
         stock,
       })
-      toast("Product added",{
+      toast("Product added", {
         description: "Your new product has been successfully added.",
       })
     }
@@ -201,11 +201,13 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
+                    {categories
+                      .filter((category) => category.trim() !== "") // remove empty or whitespace-only strings
+                      .map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -217,11 +219,14 @@ export function ProductForm({ editProduct, onCancel, onSave }: ProductFormProps)
                     <SelectValue placeholder="Select tag" />
                   </SelectTrigger>
                   <SelectContent>
-                    {tags.map((tag) => (
-                      <SelectItem key={tag} value={tag}>
-                        {tag === "" ? "None" : tag}
-                      </SelectItem>
-                    ))}
+                    {tags
+                      .filter((tag) => tag.trim() !== "")
+                      .map((tag) => (
+                        <SelectItem key={tag} value={tag}>
+                          {tag}
+                        </SelectItem>
+                      ))}
+
                   </SelectContent>
                 </Select>
               </div>

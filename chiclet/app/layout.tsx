@@ -23,9 +23,9 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth light" style={{ scrollBehavior: "smooth", colorScheme: "light" }}>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
-        <AuthInitializer /> 
+          <AuthInitializer />
           <div className="flex flex-col min-h-screen">
-            <Navbar /> 
+            <Navbar />
             <div className="container mx-auto px-4 py-4">
               {children}
             </div>

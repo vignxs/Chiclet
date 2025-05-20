@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useAddressStore, type Address } from "@/lib/address-store"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
 import { Edit, Trash2 } from "lucide-react"
 import {
   AlertDialog,
@@ -14,7 +15,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { toast } from "sonner"
 
 interface AddressCardProps {
   address: Address
@@ -24,10 +24,12 @@ interface AddressCardProps {
 export function AddressCard({ address, onEdit }: AddressCardProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const { deleteAddress } = useAddressStore()
+  const { toast } = useToast()
 
   const handleDelete = () => {
     deleteAddress(address.id)
-    toast( "Address deleted",{
+    toast({
+      title: "Address deleted",
       description: "Your address has been successfully deleted.",
     })
     setIsDeleteDialogOpen(false)

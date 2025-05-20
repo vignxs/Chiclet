@@ -11,8 +11,6 @@ interface OrderTimelineProps {
 }
 
 const statusColorMap: Record<OrderStatus, string> = {
-   placed: "bg-green-500",
-   processed: "bg-green-500",
   processing: "bg-yellow-500",
   shipped: "bg-blue-500",
   delivered: "bg-green-500",
@@ -21,8 +19,6 @@ const statusColorMap: Record<OrderStatus, string> = {
 
 const statusLabelMap: Record<OrderStatus, string> = {
   processing: "Order Processing",
-  processed: "Order Processed",
-  placed: "Order Placed",
   shipped: "Order Shipped",
   delivered: "Order Delivered",
   cancelled: "Order Cancelled",
@@ -38,7 +34,7 @@ const formatDate = (dateStr: string): string => {
 const OrderTimeline: React.FC<OrderTimelineProps> = ({ ordersTimeline }) => {
   if (!ordersTimeline || ordersTimeline.length === 0) {
     return (
-      <div className="bg-white rounded-lg border overflow-hidden">
+      <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden dark:border-neutral-800">
         <div className="p-6">
           <h2 className="text-xl font-semibold mb-4">Order Timeline</h2>
           <p className="text-gray-500">No timeline information available.</p>
@@ -48,7 +44,7 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ ordersTimeline }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg border overflow-hidden">
+    <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden dark:border-neutral-800">
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-4">Order Timeline</h2>
         <div className="space-y-4">

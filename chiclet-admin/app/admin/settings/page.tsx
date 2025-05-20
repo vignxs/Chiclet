@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { toast } from "sonner"
+import { useToast } from "@/hooks/use-toast"
 
 export default function SettingsPage() {
+  const { toast } = useToast()
 
   const handleSave = () => {
-    toast( "Settings saved",{
+    toast({
+      title: "Settings saved",
       description: "Your settings have been successfully saved.",
     })
   }

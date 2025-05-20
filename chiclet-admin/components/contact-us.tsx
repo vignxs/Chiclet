@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-// import { MapPin, Phone, Mail, Clock } from "lucide-react"
+import { MapPin, Phone, Mail, Clock } from "lucide-react"
 
 export default function ContactUs() {
   return (
@@ -13,7 +13,7 @@ export default function ContactUs() {
           </div>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Contact Us</h2>
           <p className="text-gray-500 md:text-lg max-w-[700px] mx-auto">
-            Have questions about our products or need assistance? We&apos;re here to help!
+            Have questions about our products or need assistance? We're here to help!
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export default function ContactUs() {
 
           {/* Contact Info */}
           <div className="space-y-8">
-            {/* <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
               <div className="grid gap-6">
                 <div className="flex items-start space-x-4">
                   <MapPin className="w-5 h-5 text-pink-500 mt-1" />
@@ -92,7 +92,7 @@ export default function ContactUs() {
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
 
             <div className="aspect-video w-full bg-gray-200 rounded-lg overflow-hidden">
               {/* This would be a map in a real implementation */}

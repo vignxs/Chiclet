@@ -19,14 +19,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     // Check if user is authenticated and is an admin
-    // if (!isAuthenticated && !isLoading) {
-    //   router.push("/signin?redirect=/admin")
-    //   return
-    // }
+    if (!isAuthenticated && !isLoading) {
+      router.push("/signin?redirect=/admin")
+      return
+    }
 
     if (user) {
-      const authorized = true // isAdmin(user.id)
-      console.log("User is admin:", authorized)
+      const authorized = isAdmin(user.id)
       setIsAuthorized(authorized)
 
       if (!authorized && !isLoading) {
@@ -50,9 +49,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
-  // if (!isAuthorized) {
-  //   return null // Will redirect in useEffect
-  // }
+  if (!isAuthorized) {
+    return null // Will redirect in useEffect
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -64,12 +63,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         </div>
 
+        {/* Update the navigation links to include our new pages */}
         <nav className="flex-1 p-4 space-y-1">
           <Link href="/admin" className="flex items-center p-2 rounded-md hover:bg-gray-800">
             <LayoutDashboard className="h-5 w-5 mr-3" />
             Dashboard
           </Link>
-          <Link href="/admin/products" className="flex items-center p-2 rounded-md hover:bg-gray-800">
+          <Link href="/products" className="flex items-center p-2 rounded-md hover:bg-gray-800">
             <Package className="h-5 w-5 mr-3" />
             Products
           </Link>
@@ -77,7 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <ShoppingBag className="h-5 w-5 mr-3" />
             Orders
           </Link>
-          <Link href="/admin/customers" className="flex items-center p-2 rounded-md hover:bg-gray-800">
+          <Link href="/customers" className="flex items-center p-2 rounded-md hover:bg-gray-800">
             <Users className="h-5 w-5 mr-3" />
             Customers
           </Link>

@@ -1,15 +1,13 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import type { Address } from "./address-store"
-import { useAuthStore } from "./auth"
-import { supabase } from "./supabaseClient"
 
-export type OrderStatus = "placed" | "processed" | "processing" | "shipped" | "delivered" | "cancelled"
+export type OrderStatus = "processing" | "shipped" | "delivered" | "cancelled"
 export type PaymentStatus = "paid" | "pending" | "failed"
 
 export type OrderItem = {
   id: number
-  product_id: number
+  productId: number
   name: string
   price: number
   quantity: number
@@ -18,30 +16,23 @@ export type OrderItem = {
 
 export type Order = {
   id: string
-  user_id: string
-  order_items: OrderItem[]
+  userId: string
+  items: OrderItem[]
   total: number
   status: OrderStatus
-  payment_status: PaymentStatus
-  created_at: string
-  updated_at: string
-  address_id: number
-  tracking_number?: string
+  paymentStatus: PaymentStatus
+  createdAt: string
+  updatedAt: string
+  addressId: number
+  shippingAddress: Address
+  trackingNumber?: string
 }
-
-export type OrderTimelineEntry = {
-  status: OrderStatus;
-  timestamp: string;
-};
-
 
 type OrdersState = {
   orders: Order[]
-  fetchOrders: () => Promise<void>
-  addOrder: (userId: string, items: OrderItem[], addressId: number) => Promise<Order | null>
+  addOrder: (userId: string, items: OrderItem[], addressId: number, shippingAddress: Address) => Order
   cancelOrder: (orderId: string) => void
   getOrdersByUserId: (userId: string) => Order[]
-  getOrderTimelineByOrderId: (orderId: string) => Promise<OrderTimelineEntry[] | null>;
 }
 
 // Generate a random order ID
@@ -49,165 +40,160 @@ const generateOrderId = () => {
   return `ORD-${Math.floor(Math.random() * 10000)}-${Date.now().toString().slice(-4)}`
 }
 
+// Sample mock data for demonstration
+const mockOrders: Order[] = [
+  {
+    id: "ORD-1234-5678",
+    userId: "google-oauth2|123456789",
+    items: [
+      {
+        id: 1,
+        productId: 1,
+        name: "Crystal Hair Clips",
+        price: 12.99,
+        quantity: 2,
+        image: "/placeholder.svg?height=100&width=100",
+      },
+      {
+        id: 2,
+        productId: 3,
+        name: "Butterfly Necklace",
+        price: 24.99,
+        quantity: 1,
+        image: "/placeholder.svg?height=100&width=100",
+      },
+    ],
+    total: 50.97,
+    status: "delivered",
+    paymentStatus: "paid",
+    createdAt: "2023-04-15T10:30:00Z",
+    updatedAt: "2023-04-18T14:20:00Z",
+    addressId: 1,
+    shippingAddress: {
+      id: 1,
+      userId: "google-oauth2|123456789",
+      name: "Home",
+      street: "123 Main St",
+      city: "New York",
+      state: "NY",
+      zip: "10001",
+      country: "USA",
+      createdAt: "2023-01-15T10:30:00Z",
+    },
+    trackingNumber: "TRK123456789",
+  },
+  {
+    id: "ORD-5678-9012",
+    userId: "google-oauth2|123456789",
+    items: [
+      {
+        id: 3,
+        productId: 5,
+        name: "Beaded Bracelet",
+        price: 14.99,
+        quantity: 1,
+        image: "/placeholder.svg?height=100&width=100",
+      },
+    ],
+    total: 14.99,
+    status: "shipped",
+    paymentStatus: "paid",
+    createdAt: "2023-05-20T15:45:00Z",
+    updatedAt: "2023-05-21T09:10:00Z",
+    addressId: 2,
+    shippingAddress: {
+      id: 2,
+      userId: "google-oauth2|123456789",
+      name: "Work",
+      street: "456 Business Ave",
+      city: "San Francisco",
+      state: "CA",
+      zip: "94105",
+      country: "USA",
+      createdAt: "2023-03-20T14:45:00Z",
+    },
+    trackingNumber: "TRK987654321",
+  },
+  {
+    id: "ORD-9012-3456",
+    userId: "google-oauth2|123456789",
+    items: [
+      {
+        id: 4,
+        productId: 2,
+        name: "Pearl Earrings",
+        price: 18.99,
+        quantity: 1,
+        image: "/placeholder.svg?height=100&width=100",
+      },
+      {
+        id: 5,
+        productId: 6,
+        name: "Charm Anklet",
+        price: 16.99,
+        quantity: 1,
+        image: "/placeholder.svg?height=100&width=100",
+      },
+    ],
+    total: 35.98,
+    status: "processing",
+    paymentStatus: "paid",
+    createdAt: "2023-06-10T12:15:00Z",
+    updatedAt: "2023-06-10T12:15:00Z",
+    addressId: 1,
+    shippingAddress: {
+      id: 1,
+      userId: "google-oauth2|123456789",
+      name: "Home",
+      street: "123 Main St",
+      city: "New York",
+      state: "NY",
+      zip: "10001",
+      country: "USA",
+      createdAt: "2023-01-15T10:30:00Z",
+    },
+  },
+]
 
 export const useOrdersStore = create<OrdersState>()(
   persist(
     (set, get) => ({
-      orders: [],
-
-      fetchOrders: async () => {
-        try {
-          const user = useAuthStore.getState().user;
-          if (!user?.id) {
-            console.warn("No authenticated user found.");
-            return;
-          }
-
-          const { data: orders, error } = await supabase
-            .from('orders')
-            .select(`
-              id,
-              user_id,
-              address_id,
-              total,
-              status,
-              created_at,
-              updated_at,
-              tracking_number,
-              payment_status,
-              order_items (
-                id,
-                product_id,
-                name,
-                color,
-                price,
-                quantity,
-                image
-              )
-            `)
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false });
-
-          console.log('Orders with items:', orders);
-
-          if (error) {
-            console.error('Error fetching orders with items:', error);
-            return;
-          }
-
-          set({ orders: orders ?? [] });
-
-        } catch (err) {
-          console.error("Unexpected error while fetching orders:", err);
+      orders: mockOrders,
+      addOrder: (userId, items, addressId, shippingAddress) => {
+        const newOrder: Order = {
+          id: generateOrderId(),
+          userId,
+          items,
+          total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+          status: "processing",
+          paymentStatus: "paid", // Assuming payment is successful
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          addressId,
+          shippingAddress,
         }
-      },
-
-
-
-      addOrder: async (userId, items, addressId) => {
-
-
-        const { data: newOrder, error: orderError } = await supabase
-          .from("orders")
-          .insert({
-            id: generateOrderId(),
-            user_id: userId,
-            total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-            status: "processing",
-            payment_status: "paid",
-            address_id: addressId,
-          })
-          .select()
-          .single()
-
-        if (orderError || !newOrder) {
-          console.error("Error creating order:", orderError)
-          return null
-        }
-
-        // Insert order items
-        const itemsPayload = items.map((item) => ({
-          order_id: newOrder.id,
-          product_id: item.product_id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          image: item.image,
-        }))
-
-        const { error: itemsError } = await supabase.from("order_items").insert(itemsPayload)
-
-        if (itemsError) {
-          console.error("Error adding order items:", itemsError)
-          return null
-        }
-
-        const { error: timrlineError } = await supabase.from("order_timeline").insert({
-          order_id: newOrder.id,
-          status: "placed",
-        })
-
-        if (timrlineError) {
-          console.error("Error adding order items timeline:", timrlineError)
-          return null
-        }
-        const fullOrder = {
-          ...newOrder,
-          order_items: itemsPayload,
-        };
-
 
         set((state) => ({
-          orders: [...state.orders, fullOrder],
+          orders: [...state.orders, newOrder],
         }))
 
         return newOrder
       },
-      cancelOrder: async (orderId) => {
-
-        const { error } = await supabase
-          .from("orders")
-          .update({ status: "cancelled", updated_at: new Date().toISOString() })
-          .eq("id", orderId)
-
-        if (error) {
-          console.error("Error cancelling order:", error)
-          return
-        }
-        await supabase.from("order_timeline").insert({
-          order_id: orderId,
-          status: "cancelled",
-          timestamp: new Date().toISOString(),
-        })
-
+      cancelOrder: (orderId) => {
         set((state) => ({
           orders: state.orders.map((order) =>
             order.id === orderId
               ? {
-                ...order,
-                status: "cancelled",
-                updatedAt: new Date().toISOString(),
-              }
+                  ...order,
+                  status: "cancelled",
+                  updatedAt: new Date().toISOString(),
+                }
               : order,
           ),
         }))
       },
       getOrdersByUserId: (userId) => {
-        return get().orders.filter((order) => order.user_id === userId)
-      },
-      getOrderTimelineByOrderId: async (order_id) => {
-        const { data, error } = await supabase
-          .from("order_timeline")
-          .select("status, timestamp")
-          .eq("order_id", order_id)
-          .order("timestamp", { ascending: true });
-
-        if (error) {
-          console.error("Error fetching order timeline:", error);
-          return null; // Or handle the error as needed
-        }
-
-        return data;
+        return get().orders.filter((order) => order.userId === userId)
       },
     }),
     {

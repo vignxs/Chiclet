@@ -105,7 +105,7 @@ const mockProducts: Product[] = [
     id: 6,
     name: "Charm Anklet",
     description:
-      "Dainty anklet with small charms that catch the light as you move. Adjustable length for the perfect fit.",
+      "Dainty anklet with small charms that catch the light as you move. Adjustable length for perfect fit.",
     price: 16.99,
     category: "Anklets",
     tag: "",

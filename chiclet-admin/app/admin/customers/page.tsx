@@ -25,8 +25,8 @@ export default function CustomersPage() {
     const customerMap = new Map<string, Customer>()
 
     orders.forEach((order) => {
-      const customerId = order.user_id
-      const customerName = "order.shippingAddress.name"
+      const customerId = order.userId
+      const customerName = order.shippingAddress.name
 
       if (!customerMap.has(customerId)) {
         customerMap.set(customerId, {
@@ -44,10 +44,10 @@ export default function CustomersPage() {
       customer.totalSpent += order.total
 
       // Update last order date if this order is more recent
-      const orderDate = new Date(order.created_at).getTime()
+      const orderDate = new Date(order.createdAt).getTime()
       const lastOrderDate = customer.lastOrder ? new Date(customer.lastOrder).getTime() : 0
       if (orderDate > lastOrderDate) {
-        customer.lastOrder = order.created_at
+        customer.lastOrder = order.createdAt
       }
     })
 

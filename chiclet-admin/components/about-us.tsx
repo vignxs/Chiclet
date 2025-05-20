@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export default function AboutUs() {
   return (
-    <section id="about" className="w-full py-16 md:py-24 mt-8 rounded-2xl bg-gray-50 scroll-mt-20">
+    <section id="about" className="w-full py-16 md:py-24 bg-gray-50 scroll-mt-20">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div className="order-2 md:order-1">
@@ -11,7 +11,7 @@ export default function AboutUs() {
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-pink-100 rounded-full opacity-50"></div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-pink-200 rounded-full opacity-40"></div>
               <Image
-                src="/chiclet.jpeg?height=600&width=600"
+                src="/placeholder.svg?height=600&width=600"
                 alt="About Chiclet"
                 width={600}
                 height={600}
@@ -35,7 +35,7 @@ export default function AboutUs() {
 
             <p className="text-gray-600">
               Each Chiclet accessory is thoughtfully designed to add that perfect finishing touch to any outfit. We
-              believe that accessories aren&apos;t just add-ons—they&apos;re essential elements of self-expression that can
+              believe that accessories aren't just add-ons—they're essential elements of self-expression that can
               transform both your look and your confidence.
             </p>
 

@@ -35,7 +35,7 @@ export default function AdminDashboard() {
   // Get recent orders
   const recentOrders = [...orders]
     .sort((a, b) => {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
     .slice(0, 5)
 
@@ -89,12 +89,12 @@ export default function AdminDashboard() {
               $
               {orders
                 .filter((order) => {
-                  const date = new Date(order.created_at)
+                  const date = new Date(order.createdAt)
                   const now = new Date()
                   return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()
                 })
                 .reduce((sum, order) => sum + order.total, 0)
-                .toFixed(2)}{" "}
+                .toFixed(2)}{""}
               this month
             </p>
           </CardContent>
@@ -106,16 +106,16 @@ export default function AdminDashboard() {
             <Users className="h-4 w-4 text-gray-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{new Set(orders.map((order) => order.user_id)).size}</div>
+            <div className="text-2xl font-bold">{new Set(orders.map((order) => order.userId)).size}</div>
             <p className="text-xs text-gray-500 mt-1">
               {
                 orders.filter((order) => {
-                  const date = new Date(order.created_at)
+                  const date = new Date(order.createdAt)
                   const now = new Date()
                   const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30))
                   return date > thirtyDaysAgo
                 }).length
-              }{" "}
+              }{""}
               orders in last 30 days
             </p>
           </CardContent>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
                   <div key={order.id} className="flex justify-between items-center border-b pb-2">
                     <div>
                       <div className="font-medium">{order.id}</div>
-                      <div className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString()}</div>
+                      <div className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</div>
                     </div>
                     <div className="text-right">
                       <div className="font-medium">${order.total.toFixed(2)}</div>

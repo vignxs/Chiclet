@@ -36,7 +36,7 @@ export default function HeroSection() {
   if (!mounted) return null
 
   return (
-    <section className="relative w-full py-20 md:py-32 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-pink-50">
+    <section className="relative w-full py-20 md:py-32 overflow-hidden bg-gradient-to-b from-white to-pink-50">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-pink-100 opacity-30 blur-3xl"></div>
@@ -142,7 +142,7 @@ export default function HeroSection() {
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3, ease: "easeInOut" }}
               >
                 <Image
-                  src="/Earrings2.jpeg?height=80&width=80"
+                  src="/placeholder.svg?height=80&width=80"
                   alt="Earrings"
                   width={80}
                   height={80}
@@ -156,7 +156,7 @@ export default function HeroSection() {
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2.5, ease: "easeInOut" }}
               >
                 <Image
-                  src="/Bracelet.jpeg?height=64&width=64"
+                  src="/placeholder.svg?height=64&width=64"
                   alt="Bracelet"
                   width={64}
                   height={64}
@@ -167,7 +167,7 @@ export default function HeroSection() {
               {/* Main image */}
               <div className="absolute inset-8 rounded-2xl overflow-hidden shadow-2xl z-10">
                 <Image
-                  src="https://img.freepik.com/free-photo/fashionable-modern-rococo-style_23-2151916460.jpg?height=500&width=500"
+                  src="/placeholder.svg?height=500&width=500"
                   alt="Hero Image"
                   width={500}
                   height={500}
@@ -179,10 +179,10 @@ export default function HeroSection() {
               <motion.div
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-30 z-30"
                 animate={{
-                  backgroundPosition: ["200% 200%", "-200% -200%"],
+                  backgroundPosition: ["200%", "-200%"],
                 }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 10, ease: "easeInOut" }}
-                style={{ backgroundSize: "200% 200%" }}
+                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3, ease: "easeInOut" }}
+                style={{ backgroundSize: "200%" }}
               />
             </div>
           </motion.div>
@@ -191,4 +191,3 @@ export default function HeroSection() {
     </section>
   )
 }
-

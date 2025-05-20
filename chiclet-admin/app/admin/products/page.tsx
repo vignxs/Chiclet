@@ -3,9 +3,9 @@
 import { useState } from "react"
 import type { Product } from "@/lib/products"
 import { Button } from "@/components/ui/button"
+import { ProductForm } from "@/components/admin/product-form"
 import { ProductList } from "@/components/admin/product-list"
 import { Plus } from "lucide-react"
-import { ProductForm } from "@/components/admin/product-form"
 
 export default function ProductsPage() {
   const [showProductForm, setShowProductForm] = useState(false)

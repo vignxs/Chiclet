@@ -10,6 +10,7 @@ import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
 import { useProductStore } from "@/lib/productStore"
+import { sendEmail } from "@/lib/sendEmail"
 
 
 type Params = {
@@ -33,15 +34,8 @@ export default function ProductPage({ params }: PageProps) {
   console.log("Product:", product);
 
 
-  // Sample images for the product
-  const productImages = [
-    `/placeholder.svg?height=600&width=600`,
-    `/placeholder.svg?height=600&width=600`,
-    `/placeholder.svg?height=600&width=600`,
-    `/placeholder.svg?height=600&width=600`,
-  ]
+  const handleAddToCart = async () => {
 
-  const handleAddToCart = () => {
     console.log("Adding to cart:", {
       product_id: product.id,
       name: product.name,
@@ -103,25 +97,6 @@ export default function ProductPage({ params }: PageProps) {
                   height={600}
                   className="object-cover w-full h-full transition-all duration-300 hover:scale-105"
                 />
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {productImages.map((image, index) => (
-                  <button
-                    key={index}
-                    className={`aspect-square overflow-hidden rounded-md border ${activeImage === index ? "ring-2 ring-black" : ""
-                      }`}
-                    onClick={() => setActiveImage(index)}
-                  >
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`${product.name} thumbnail ${index + 1}`}
-                      width={150}
-                      height={150}
-                      className="object-cover w-full h-full"
-                    />
-                  </button>
-                ))}
               </div>
             </div>
 
@@ -193,7 +168,7 @@ export default function ProductPage({ params }: PageProps) {
                   <ShoppingBag className="mr-2 h-5 w-5" />
                   Add to Cart
                 </Button>
-               
+
                 <Button size="icon" variant="outline" className="border-black hover:bg-gray-100">
                   <Share2 className="h-5 w-5" />
                 </Button>

@@ -4,14 +4,15 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
 import { useAuthStore } from "@/lib/auth"
 import { Loader2 } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
-import { toast } from "sonner"
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
   const { signInWithGoogle } = useAuthStore()
+  const { toast } = useToast()
   const router = useRouter()
 
   const handleGoogleSignIn = async () => {
@@ -23,8 +24,10 @@ export default function SignInPage() {
       // The success handling will occur in the callback route
     } catch (error) {
       console.error(error)
-      toast("Sign in failed",{
+      toast({
+        title: "Sign in failed",
         description: "An error occurred during sign in. Please try again.",
+        variant: "destructive",
       })
       setIsLoading(false)
     }
@@ -39,7 +42,7 @@ export default function SignInPage() {
           </Link>
           <h2 className="mt-6 text-2xl font-bold text-gray-900">Sign in to your account</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Or{" "}
+            Or{""}
             <Link href="/signup" className="font-medium text-pink-600 hover:text-pink-500">
               create a new account
             </Link>
@@ -50,7 +53,7 @@ export default function SignInPage() {
           <Button
             onClick={handleGoogleSignIn}
             disabled={isLoading}
-            className="w-full flex items-center justify-center py-6 border border-gray-300 rounded-md shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+            className="w-full flex items-center justify-center py-6 border border-neutral-200 border-gray-300 rounded-md shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:border-neutral-800"
           >
             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FcGoogle className="mr-2 h-5 w-5" />}
             <span className="text-base font-medium">Sign in with Google</span>
@@ -61,8 +64,8 @@ export default function SignInPage() {
             <p>
               <Link href="#" className="font-medium text-pink-600 hover:text-pink-500">
                 Terms of Service
-              </Link>{" "}
-              and{" "}
+              </Link>{""}
+              and{""}
               <Link href="#" className="font-medium text-pink-600 hover:text-pink-500">
                 Privacy Policy
               </Link>

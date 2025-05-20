@@ -46,7 +46,6 @@ export default function Navbar() {
 
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-500 ${isScrolled ? "py-2" : "py-3"}`}>
-      <div className="container mx-auto px-4">
       <div
         className={`rounded-full transition-all duration-500 ${
           isScrolled ? "bg-white/70 backdrop-blur-md shadow-md" : "bg-white/80 backdrop-blur-sm"
@@ -146,7 +145,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-        </div>
     </header>
   )
 }

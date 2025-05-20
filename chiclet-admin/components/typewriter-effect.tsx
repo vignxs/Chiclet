@@ -51,19 +51,19 @@ export const TypewriterEffect = ({ words, className, cursorClassName }: Typewrit
   }, [currentText, currentWordIndex, isDeleting, typingSpeed, words])
 
   return (
-    <div className={cn("inline-flex", className)}>
-      <span className="relative inline-block leading-none">
+    <div className={cn("inline-flex items-center", className)}>
+      <span className="inline-block">
         {words.map((word, idx) => {
           const isCurrentWord = idx === currentWordIndex
 
           return (
-            <span key={idx} className={cn("absolute top-0 left-0 opacity-0 mx-3", isCurrentWord && "opacity-100", word.className)}>
+            <span key={idx} className={cn("absolute opacity-0", isCurrentWord && "opacity-100", word.className)}>
               {isCurrentWord ? currentText : word.text}
             </span>
           )
         })}
       </span>
-      <span className={cn("ml-1 inline-block h-[1em] w-[4px] animate-blink bg-black", cursorClassName)} />
+      <span className={cn("ml-1 inline-block h-4 w-[2px] animate-blink bg-black", cursorClassName)} />
     </div>
   )
 }

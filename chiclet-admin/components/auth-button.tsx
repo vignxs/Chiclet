@@ -14,22 +14,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User, LogOut, Settings, Package } from "lucide-react"
-import { toast } from "sonner"
+import { useToast } from "@/hooks/use-toast"
 
 export function AuthButton() {
   const { user, isAuthenticated, logout } = useAuthStore()
   const [isOpen, setIsOpen] = useState(false)
+  const { toast } = useToast()
 
   const handleLogout = async () => {
     try {
       await logout()
-      toast("Logged out",{
+      toast({
+        title: "Logged out",
         description: "You have been successfully logged out.",
       })
     } catch (error) {
       console.error(error)
-      toast("Logout failed",{
+      toast({
+        title: "Logout failed",
         description: "An error occurred during logout. Please try again.",
+        variant: "destructive",
       })
     }
   }

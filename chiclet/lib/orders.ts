@@ -38,7 +38,7 @@ export type OrderTimelineEntry = {
 type OrdersState = {
   orders: Order[]
   fetchOrders: () => Promise<void>
-  addOrder: (userId: string, items: OrderItem[], addressId: number) => Promise<Order | null>
+  addOrder: (userId: string, items: OrderItem[], addressId: number, payment_id: number) => Promise<Order | null>
   cancelOrder: (orderId: string) => void
   getOrdersByUserId: (userId: string) => Order[]
   getOrderTimelineByOrderId: (orderId: string) => Promise<OrderTimelineEntry[] | null>;
@@ -104,7 +104,7 @@ export const useOrdersStore = create<OrdersState>()(
 
 
 
-      addOrder: async (userId, items, addressId) => {
+      addOrder: async (userId, items, addressId, payment_id) => {
 
 
         const { data: newOrder, error: orderError } = await supabase
@@ -115,6 +115,7 @@ export const useOrdersStore = create<OrdersState>()(
             total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
             status: "processing",
             payment_status: "paid",
+            razorpay_payment_id:payment_id,
             address_id: addressId,
           })
           .select()

@@ -4,28 +4,28 @@ import { useState } from "react"
 import { useOrdersStore, type OrderStatus } from "@/lib/orders"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/hooks/use-toast"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Search, Eye } from "lucide-react"
-import { useAuthStore } from "@/lib/auth"
 
 export default function OrdersPage() {
   const { orders } = useOrdersStore()
-    const { user, isAuthenticated, logout } = useAuthStore()
-  
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">("all")
+  const { toast } = useToast()
 
   // Filter orders based on search term and status
   const filteredOrders = orders.filter(
     (order) =>
-      (order.id.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (statusFilter === "all" || order.status === statusFilter),
   )
 
   // Sort orders by date (newest first)
   const sortedOrders = [...filteredOrders].sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
 
   const formatDate = (dateString: string) => {
@@ -93,9 +93,9 @@ export default function OrdersPage() {
               {sortedOrders.map((order) => (
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
-                  <TableCell>{formatDate(order.created_at)}</TableCell>
-                  <TableCell>{user?.user_metadata.full_name}</TableCell>
-                  <TableCell>{order.order_items.length} items</TableCell>
+                  <TableCell>{formatDate(order.createdAt)}</TableCell>
+                  <TableCell>{order.shippingAddress.name}</TableCell>
+                  <TableCell>{order.items.length} items</TableCell>
                   <TableCell>${order.total.toFixed(2)}</TableCell>
                   <TableCell>
                     <div

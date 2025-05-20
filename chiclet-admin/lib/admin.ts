@@ -1,41 +1,38 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { supabase } from "./supabaseClient"
 
-type Admin = {
+export interface AdminUser {
   id: string
-  full_name?: string
+  email: string
+  name: string
+  role: "admin" | "superadmin"
 }
 
 interface AdminState {
-  admins: Admin[]
-  fetchAdmins: () => Promise<void>
+  admins: AdminUser[]
   isAdmin: (userId: string) => boolean
 }
+
+// Sample mock data for demonstration
+const mockAdmins: AdminUser[] = [
+  {
+    id: "google-oauth2|123456789",
+    email: "admin@example.com",
+    name: "Admin User",
+    role: "admin",
+  },
+]
 
 export const useAdminStore = create<AdminState>()(
   persist(
     (set, get) => ({
-      admins: [],
-      fetchAdmins: async () => {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("id, full_name")
-          .eq("role", "admin")
-
-        if (error) {
-          console.error("Error fetching admins:", error)
-          return
-        }
-
-        set({ admins: data || [] })
-      },
-      isAdmin: (userId: string) => {
+      admins: mockAdmins,
+      isAdmin: (userId) => {
         return get().admins.some((admin) => admin.id === userId)
       },
     }),
     {
       name: "chiclet-admins",
     },
-  )
+  ),
 )

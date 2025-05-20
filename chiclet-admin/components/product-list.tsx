@@ -5,14 +5,7 @@ import { useProductsStore, type Product } from "@/lib/products"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Edit, Trash2, Search } from 'lucide-react'
+import { Edit, Trash2, Search } from "lucide-react"
 
 interface ProductListProps {
   onEdit: (product: Product) => void
@@ -106,19 +99,19 @@ export function ProductList({ onEdit }: ProductListProps) {
                         product.stock === 0
                           ? "bg-red-100 text-red-800"
                           : product.stock < 5
-                          ? "bg-orange-100 text-orange-800"
-                          : product.stock < 10
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
+                            ? "bg-orange-100 text-orange-800"
+                            : product.stock < 10
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-green-100 text-green-800"
                       }`}
                     >
                       {product.stock === 0
                         ? "Out of stock"
                         : product.stock < 5
-                        ? "Low stock"
-                        : product.stock < 10
-                        ? "Limited stock"
-                        : "In stock"}
+                          ? "Low stock"
+                          : product.stock < 10
+                            ? "Limited stock"
+                            : "In stock"}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
