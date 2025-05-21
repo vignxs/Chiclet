@@ -315,7 +315,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                       <div className="flex-1 min-w-0">
                         <div className="font-medium">{item.name}</div>
                         <div className="text-sm text-neutral-500 dark:text-neutral-400">
-                          ${item.price.toFixed(2)} × {item.quantity}
+                          ₹{item.price.toFixed(2)} × {item.quantity}
                         </div>
                       </div>
                       <div className="font-medium text-right">${(item.price * item.quantity).toFixed(2)}</div>

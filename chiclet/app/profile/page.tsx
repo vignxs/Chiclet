@@ -167,7 +167,7 @@ export default function ProfilePage() {
                   </div>
                 ) : (
                   <div className="text-center py-12 bg-gray-50 rounded-lg border">
-                    <p className="text-gray-500 mb-4">You don't have any saved addresses yet.</p>
+                    <p className="text-gray-500 mb-4">You don&apos;t have any saved addresses yet.</p>
                     <Button onClick={() => setShowAddressForm(true)}>
                       <Plus className="h-4 w-4 mr-2" />
                       Add Your First Address

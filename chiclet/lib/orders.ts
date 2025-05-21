@@ -1,6 +1,5 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import type { Address } from "./address-store"
 import { useAuthStore } from "./auth"
 import { supabase } from "./supabaseClient"
 
@@ -101,8 +100,6 @@ export const useOrdersStore = create<OrdersState>()(
           console.error("Unexpected error while fetching orders:", err);
         }
       },
-
-
 
       addOrder: async (userId, items, addressId, payment_id) => {
 

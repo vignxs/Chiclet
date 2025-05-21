@@ -1,13 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import type { Order } from "@/lib/orders"
 import { OrderStatus } from "@/components/order-status"
 import { Button } from "@/components/ui/button"
 import { useOrdersStore } from "@/lib/orders"
-import { ChevronDown, ChevronUp, ExternalLink, Loader2, Package } from "lucide-react"
+import { ChevronDown, ChevronUp, ExternalLink, Package } from "lucide-react"
 import { toast } from "sonner"
 
 interface OrderCardProps {
@@ -77,7 +77,7 @@ export function OrderCard({ order }: OrderCardProps) {
               <div>
                 <p className="font-medium text-sm">{item.name}</p>
                 <p className="text-sm text-gray-500">
-                  ${item.price.toFixed(2)} × {item.quantity}
+                  ₹{item.price.toFixed(2)} × {item.quantity}
                 </p>
               </div>
             </div>

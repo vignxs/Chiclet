@@ -7,7 +7,7 @@ import { useOrdersStore, type Order } from "@/lib/orders"
 import { OrderCard } from "@/components/order-card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ShoppingBag, Package, CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { ShoppingBag, Package, CheckCircle, XCircle, Loader2, Link } from "lucide-react"
 
 export default function OrdersPage() {
   const { user, isAuthenticated } = useAuthStore()
@@ -61,7 +61,7 @@ export default function OrdersPage() {
             <p className="text-gray-500 mt-1">View and manage your orders</p>
           </div>
           <Button asChild>
-            <a href="/shop">Continue Shopping</a>
+            <Link href="/shop">Continue Shopping</Link>
           </Button>
         </div>
 
@@ -70,10 +70,10 @@ export default function OrdersPage() {
             <ShoppingBag className="h-12 w-12 mx-auto text-gray-300" />
             <h2 className="mt-4 text-xl font-semibold">No orders yet</h2>
             <p className="mt-2 text-gray-500 max-w-md mx-auto">
-              You haven't placed any orders yet. Browse our collection and find something you'll love!
+              You haven&apos;t placed any orders yet. Browse our collection and find something you&apos;ll love!
             </p>
             <Button className="mt-6" asChild>
-              <a href="/shop">Start Shopping</a>
+              <Link href="/shop">Start Shopping</Link>
             </Button>
           </div>
         ) : (

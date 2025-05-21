@@ -45,7 +45,7 @@ export default function ProductShowcase() {
 
               <div className="p-4">
                 <h3 className="font-medium text-lg">{product.name}</h3>
-                <p className="text-gray-500">${product.price}</p>
+                <p className="text-gray-500">₹{product.price}</p>
                 <Button
                   className="w-full mt-3 bg-black text-white hover:bg-gray-800"
                 >

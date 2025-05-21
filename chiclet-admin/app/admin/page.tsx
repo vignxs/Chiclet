@@ -183,7 +183,7 @@ export default function AdminDashboard() {
                       <div className="text-sm text-gray-500">{product.category}</div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium">${product.price.toFixed(2)}</div>
+                      <div className="font-medium">₹{product.price.toFixed(2)}</div>
                       <div
                         className={`text-xs px-2 py-0.5 rounded-full inline-block ${
                           product.stock === 0

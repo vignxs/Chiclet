@@ -6,11 +6,11 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
+import {  Share2, ShoppingBag, Star, Truck } from "lucide-react"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
 import { useProductStore } from "@/lib/productStore"
-import { sendEmail } from "@/lib/sendEmail"
+import { useAuthStore } from "@/lib/auth"
 
 
 type Params = {
@@ -22,10 +22,10 @@ type PageProps = {
 };
 
 export default function ProductPage({ params }: PageProps) {
+  
+  const { isAuthenticated } = useAuthStore()
   const { products } = useProductStore();
-  const [selectedColor, setSelectedColor] = useState("")
   const [quantity, setQuantity] = useState("1")
-  const [activeImage, setActiveImage] = useState(0)
   const { addItem } = useCartStore()
 
   const productId = Number.parseInt(use(params).id);
@@ -35,12 +35,18 @@ export default function ProductPage({ params }: PageProps) {
 
 
   const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      toast("Please sign in to add items to your cart.", {
+        description: "You need to be logged in to add items to your cart.",
+      })
+      return
+    }
 
     console.log("Adding to cart:", {
       product_id: product.id,
       name: product.name,
       price: product.price,
-      color: selectedColor || product.colors[0],
+      color: product.colors[0],
       quantity: Number.parseInt(quantity),
       image: product.image,
     });
@@ -50,13 +56,13 @@ export default function ProductPage({ params }: PageProps) {
       product_id: product.id,
       name: product.name,
       price: product.price,
-      color: selectedColor || product.colors[0],
+      color:  product.colors[0],
       quantity: Number.parseInt(quantity),
       image: product.image,
     })
 
     toast("Added to cart", {
-      description: `${product.name} (${selectedColor || product.colors[0]}) has been added to your cart.`,
+      description: `${product.name} (${ product.colors[0]}) has been added to your cart.`,
     })
   }
 
@@ -77,7 +83,7 @@ export default function ProductPage({ params }: PageProps) {
             <Link href={`/shop?category=${product.category}`} className="hover:text-gray-900">
               {product.category}
             </Link>
-            <span className="mx-2">/</span>
+            <span className="mx-2">/</span> 
             <span className="text-gray-900">{product.name}</span>
           </div>
         </div>
@@ -121,12 +127,12 @@ export default function ProductPage({ params }: PageProps) {
                 <span className="ml-2 text-sm text-gray-500">{product.rating} (120 reviews)</span>
               </div>
 
-              <div className="text-2xl font-bold">${product.price}</div>
+              <div className="text-2xl font-bold">₹{product.price}</div>
 
               <p className="text-gray-500">{product.description}</p>
 
               <div className="space-y-4">
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <label className="text-sm font-medium">Color</label>
                   <div className="flex flex-wrap gap-2">
                     {product.colors.map((color) => (
@@ -140,7 +146,7 @@ export default function ProductPage({ params }: PageProps) {
                       </button>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Quantity</label>

@@ -28,7 +28,7 @@ export function CheckoutConfirmation({ isOpen, onOpenChange, onConfirm, total }:
             Confirm Your Order
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You're about to place an order for ${total.toFixed(2)}. Would you like to proceed with this purchase?
+            You&apos;re about to place an order for ${total.toFixed(2)}. Would you like to proceed with this purchase?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

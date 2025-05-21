@@ -97,6 +97,7 @@ export default function CartPage() {
       name: 'Your Store Name',
       description: 'Test Transaction',
       order_id: data.id,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       handler: async function (response: any) {
         // ✅ Proceed ONLY after successful payment
         const addresses = getAddressesByUserId(user.id);
@@ -152,6 +153,8 @@ export default function CartPage() {
       },
     };
 
+
+    // eslint-ignore-next-line @typescript-eslint/no-unused-vars
     const paymentObject = new (window as any).Razorpay(options);
     paymentObject.open();
   };
@@ -236,7 +239,7 @@ export default function CartPage() {
 
                   {/* Price */}
                   <div className="md:col-span-2 text-center">
-                    <div className="md:hidden text-sm text-gray-500">Price:</div>${item.price.toFixed(2)}
+                    <div className="md:hidden text-sm text-gray-500">Price:</div>₹{item.price.toFixed(2)}
                   </div>
 
                   {/* Quantity */}
@@ -262,7 +265,7 @@ export default function CartPage() {
                   {/* Total */}
                   <div className="md:col-span-2 text-right flex items-center justify-between md:justify-end">
                     <div className="md:hidden text-sm text-gray-500">Total:</div>
-                    <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
+                    <div className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</div>
                     <button
                       className="text-gray-400 hover:text-red-500 ml-4 hidden md:block"
                       onClick={() => handleRemoveItem(item.id)}

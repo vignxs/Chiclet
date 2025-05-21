@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from "@/lib/auth"
 import { Loader2 } from "lucide-react"
@@ -12,7 +11,6 @@ import { toast } from "sonner"
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
   const { signInWithGoogle } = useAuthStore()
-  const router = useRouter()
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true)

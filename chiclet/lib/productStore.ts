@@ -42,6 +42,8 @@ export const useProductStore = create<ProductStore>((set) => ({
         product_colors (color)
       `);
 
+    console.log("Products data:", data);
+    console.log("Products error:", error);
     if (error) {
       set({ error: error.message, loading: false });
     } else {

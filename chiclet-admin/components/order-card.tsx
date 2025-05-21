@@ -75,7 +75,7 @@ export function OrderCard({ order }: OrderCardProps) {
               <div>
                 <p className="font-medium text-sm">{item.name}</p>
                 <p className="text-sm text-gray-500">
-                  ${item.price.toFixed(2)} × {item.quantity}
+                  ₹{item.price.toFixed(2)} × {item.quantity}
                 </p>
               </div>
             </div>

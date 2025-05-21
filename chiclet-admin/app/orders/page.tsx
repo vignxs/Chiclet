@@ -524,10 +524,10 @@ export default function OrdersPage() {
                                   <div className="flex-1 min-w-0">
                                     <div className="font-medium truncate">{item.name}</div>
                                     <div className="text-xs text-neutral-500 dark:text-neutral-400">
-                                      ${item.price.toFixed(2)} × {item.quantity}
+                                      ₹{item.price.toFixed(2)} × {item.quantity}
                                     </div>
                                   </div>
-                                  <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
+                                  <div className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</div>
                                 </div>
                               ))}
                             </div>

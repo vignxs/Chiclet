@@ -9,7 +9,6 @@ import { useProductStore } from "./productStore"
 import { useAddressStore } from "./address-store"
 
 export const AuthInitializer = () => {
-  const setUser = useAuthStore((state) => state.user)
   const setAuth = useAuthStore.setState
   const { fetchCart } = useCartStore()
   const { fetchProducts } = useProductStore()
@@ -18,17 +17,17 @@ export const AuthInitializer = () => {
   useEffect(() => {
     const initAuth = async () => {
       const { data } = await supabase.auth.getUser()
+      fetchProducts()
+
       if (data.user) {
         setAuth({ user: data.user, isAuthenticated: true })
-
-        fetchProducts()
         fetchCart()
         fetchAddresses()
       }
     }
 
     initAuth()
-  }, [fetchCart, fetchProducts,setAuth])
+  }, [fetchCart, fetchProducts, setAuth])
 
   return null
 }

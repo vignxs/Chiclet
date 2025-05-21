@@ -231,7 +231,7 @@ export default function ShopPage() {
                       <div className="p-4">
                         <h3 className="font-medium text-lg">{product.name}</h3>
                         <div className="flex items-center justify-between mt-1">
-                          <p className="text-gray-500">${product.price}</p>
+                          <p className="text-gray-500">₹{product.price}</p>
                           <span className="text-xs text-gray-400">{product.category}</span>
                         </div>
                         <Button className="w-full mt-3 bg-black text-white hover:bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

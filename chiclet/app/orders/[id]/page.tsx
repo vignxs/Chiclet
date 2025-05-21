@@ -145,10 +145,10 @@ export default function OrderDetailsPage({ params }: PageProps) {
                       <div className="ml-4 flex-1">
                         <div className="flex justify-between">
                           <h3 className="font-medium">{item.name}</h3>
-                          <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                          <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
                         </div>
                         <p className="text-sm text-gray-500 mt-1">
-                          ${item.price.toFixed(2)} × {item.quantity}
+                          ₹{item.price.toFixed(2)} × {item.quantity}
                         </p>
                       </div>
                     </div>
