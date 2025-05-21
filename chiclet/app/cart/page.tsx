@@ -97,7 +97,7 @@ export default function CartPage() {
       name: 'Your Store Name',
       description: 'Test Transaction',
       order_id: data.id,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       handler: async function (response: any) {
         // ✅ Proceed ONLY after successful payment
         const addresses = getAddressesByUserId(user.id);
@@ -154,7 +154,7 @@ export default function CartPage() {
     };
 
 
-    // eslint-ignore-next-line @typescript-eslint/no-unused-vars
+    // eslint-ignore-next-line @typescript-eslint/no-explicit-any
     const paymentObject = new (window as any).Razorpay(options);
     paymentObject.open();
   };
