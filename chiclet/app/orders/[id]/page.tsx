@@ -204,7 +204,7 @@ export default function OrderDetailsPage({ params }: PageProps) {
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Subtotal</span>
-                    <span>${order.order_items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</span>
+                    <span>₹{order.order_items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Shipping</span>
@@ -212,11 +212,11 @@ export default function OrderDetailsPage({ params }: PageProps) {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Tax</span>
-                    <span>${(order.total * 0.08).toFixed(2)}</span>
+                    <span>₹{(order.total * 0.08).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-medium pt-3 border-t">
                     <span>Total</span>
-                    <span>${order.total.toFixed(2)}</span>
+                    <span>₹{order.total.toFixed(2)}</span>
                   </div>
                 </div>
 
