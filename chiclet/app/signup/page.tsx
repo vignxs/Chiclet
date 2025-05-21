@@ -33,7 +33,7 @@ export default function SignUpPage() {
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
         <div className="text-center">
           <Link href="/" className="inline-block">
-            <h1 className="text-3xl font-bold">Chiclet</h1>
+            <h1 className="text-3xl font-bold">LPR Designs</h1>
           </Link>
           <h2 className="mt-6 text-2xl font-bold text-gray-900">Create your account</h2>
           <p className="mt-2 text-sm text-gray-600">

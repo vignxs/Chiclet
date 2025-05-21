@@ -12,7 +12,7 @@ export default function AboutUs() {
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-pink-200 rounded-full opacity-40"></div>
               <Image
                 src="https://res.cloudinary.com/dpkyadzjo/image/upload/v1747064135/unnamed_ckrsxx.png?height=600&width=600"
-                alt="About Chiclet"
+                alt="About LPR Designs"
                 width={600}
                 height={600}
                 className="relative z-10 rounded-lg shadow-lg object-cover w-full max-w-md mx-auto"
@@ -25,16 +25,16 @@ export default function AboutUs() {
               <span className="font-medium">Our Story</span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">About Chiclet</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">About LPR Designs</h2>
 
             <p className="text-gray-600">
-              Founded in 2020, Chiclet began with a simple mission: to create beautiful, affordable accessories that
+              Founded in 2020, LPR Designs began with a simple mission: to create beautiful, affordable accessories that
               help everyone express their unique style. What started as a small collection of handcrafted pieces has
               grown into a beloved brand known for quality and creativity.
             </p>
 
             <p className="text-gray-600">
-              Each Chiclet accessory is thoughtfully designed to add that perfect finishing touch to any outfit. We
+              Each LPR Designs accessory is thoughtfully designed to add that perfect finishing touch to any outfit. We
               believe that accessories aren&apos;t just add-ons—they&apos;re essential elements of self-expression that can
               transform both your look and your confidence.
             </p>
