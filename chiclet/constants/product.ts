@@ -1,14 +1,4 @@
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
-  tag: string;
-  category: string;
-  description: string;
-  colors: string[];
-  rating: number;
-  image: string;
-};
+
 
 export const products = [
   {
@@ -156,3 +146,5 @@ export const products = [
     image: "https://i.pinimg.com/736x/14/78/60/147860b56438d607179a6c3215d444b8.jpg",
   },
 ];
+
+

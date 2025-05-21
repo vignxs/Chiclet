@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { Toaster } from "@/components/ui/sonner"
+import { AuthInitializer } from "@/lib/authUtils"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,8 +23,9 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth light" style={{ scrollBehavior: "smooth", colorScheme: "light" }}>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
+          <AuthInitializer />
           <div className="flex flex-col min-h-screen">
-            <Navbar /> 
+            <Navbar />
             <div className="container mx-auto px-4 py-4">
               {children}
             </div>

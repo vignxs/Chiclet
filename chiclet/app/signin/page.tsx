@@ -1,48 +1,45 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useAuthStore } from "@/lib/auth"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
+import { FcGoogle } from "react-icons/fc"
 import { toast } from "sonner"
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("jane@example.com")
-  const [password, setPassword] = useState("password123")
-  const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAuthStore()
-  const router = useRouter()
+  const { signInWithGoogle } = useAuthStore()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleGoogleSignIn = async () => {
     setIsLoading(true)
 
     try {
-      const success = await login(email, password)
+      await signInWithGoogle()
+      const res = await fetch('/api/sendemail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: 'vsivakumar@affinityexpress.com',
+          name: 'Vignesh',
+          type: 'welcome',
+        }),
+      });
 
-      if (success) {
-        toast("Welcome back!",{
-          description: "You have successfully signed in.",
-        })
-        router.push("/")
-      } else {
-        toast("Sign in failed",{
-          description: "Invalid email or password. Please try again.",
-        })
+      if (!res.ok) {
+        throw new Error('Failed to send email');
       }
+
+      const data = await res.json();
+      console.log('Email sent:', data);
+      // The redirect to the OAuth provider will happen automatically
+      // The success handling will occur in the callback route
     } catch (error) {
-      console.error("Sign in error:", error)
-      toast("Sign in failed",{
-        description: "An error occurred. Please try again.",
+      console.error(error)
+      toast("Sign in failed", {
+        description: "An error occurred during sign in. Please try again.",
       })
-    } finally {
       setIsLoading(false)
     }
   }
@@ -56,80 +53,36 @@ export default function SignInPage() {
           </Link>
           <h2 className="mt-6 text-2xl font-bold text-gray-900">Sign in to your account</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Or{""}
+            Or{" "}
             <Link href="/signup" className="font-medium text-pink-600 hover:text-pink-500">
               create a new account
             </Link>
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link href="#" className="text-sm font-medium text-pink-600 hover:text-pink-500">
-                  Forgot your password?
-                </Link>
-              </div>
-              <div className="relative mt-1">
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
-                  ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                "Sign in"
-              )}
-            </Button>
-          </div>
+        <div className="mt-8 space-y-6">
+          <Button
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center py-6 border border-gray-300 rounded-md shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+          >
+            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FcGoogle className="mr-2 h-5 w-5" />}
+            <span className="text-base font-medium">Sign in with Google</span>
+          </Button>
 
           <div className="text-center text-sm text-gray-500">
-            <p>Demo accounts:</p>
-            <p>jane@example.com / password123</p>
-            <p>john@example.com / password123</p>
+            <p>By signing in, you agree to our</p>
+            <p>
+              <Link href="#" className="font-medium text-pink-600 hover:text-pink-500">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href="#" className="font-medium text-pink-600 hover:text-pink-500">
+                Privacy Policy
+              </Link>
+            </p>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   )

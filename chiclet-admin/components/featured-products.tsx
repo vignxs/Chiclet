@@ -1,0 +1,51 @@
+import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+
+export default function FeaturedProducts() {
+  return (
+    <section className="w-full py-12 md:py-24">
+      <div className="container px-4 md:px-6 mx-auto">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">New Arrivals</h2>
+            <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mx-auto">
+              Check out our latest collection of trendy accessories
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          {[
+            { id: 1, name: "Summer Collection", description: "Bright and colorful accessories for sunny days" },
+            { id: 2, name: "Elegant Series", description: "Sophisticated pieces for special occasions" },
+            { id: 3, name: "Everyday Essentials", description: "Must-have accessories for your daily outfits" },
+          ].map((collection, i) => (
+            <div
+              key={i}
+              className="group relative overflow-hidden rounded-lg border border-neutral-200 transition-all duration-300 hover:shadow-md dark:border-neutral-800"
+            >
+              <div className="aspect-[4/5] overflow-hidden bg-gray-100">
+                <Image
+                  src={`/placeholder.svg?height=500&width=400`}
+                  alt={collection.name}
+                  width={400}
+                  height={500}
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+
+              <div className="p-4">
+                <h3 className="font-medium text-lg">{collection.name}</h3>
+                <p className="text-gray-500 mt-1">{collection.description}</p>
+                <Link href="/shop">
+                  <Button className="w-full mt-3 bg-black text-white hover:bg-gray-800">Shop Now</Button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -10,14 +10,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Filter, Search } from "lucide-react"
-import { products } from "@/constants/product"
-
-// Sample product data
-const allProducts =products
+import { useProductStore } from "@/lib/productStore"
 
 const categories = ["All", "Earrings", "Necklaces", "Bracelets", "Hair", "Rings", "Anklets"]
 
 export default function ShopPage() {
+  const { products: allProducts } = useProductStore();
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>(["All"])
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50])
@@ -233,7 +231,7 @@ export default function ShopPage() {
                       <div className="p-4">
                         <h3 className="font-medium text-lg">{product.name}</h3>
                         <div className="flex items-center justify-between mt-1">
-                          <p className="text-gray-500">${product.price}</p>
+                          <p className="text-gray-500">₹{product.price}</p>
                           <span className="text-xs text-gray-400">{product.category}</span>
                         </div>
                         <Button className="w-full mt-3 bg-black text-white hover:bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

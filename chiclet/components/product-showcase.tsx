@@ -2,29 +2,11 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/lib/store"
-import { toast } from "sonner"
-import { products as pd, Product } from "@/constants/product"
+import { useProductStore } from "@/lib/productStore"
+import Link from "next/link"
 
 export default function ProductShowcase() {
-  const { addItem } = useCartStore()
-
-  const products =pd.slice(0, 6)
-
-  const handleAddToCart = (product: Product) => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-      image: product.image,
-    })
-
-    toast("Added to cart", {
-      description: `${product.name} has been added to your cart.`,
-    })
-  }
-
+  const { products } = useProductStore()
   return (
     <section className="w-full py-12 md:py-16 mt-20 rounded-2xl bg-pink-70">
       <div className="container px-4 md:px-6 mx-auto">
@@ -38,11 +20,13 @@ export default function ProductShowcase() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-          {products.map((product) => (
-            <div
+          {products.slice(0, 6).map((product) => (
+            <Link
+              href={`/shop/${product.id}`}
               key={product.id}
               className="group relative overflow-hidden rounded-lg border border-neutral-200 transition-all duration-300 hover:shadow-md dark:border-neutral-800"
             >
+
               <div className="aspect-square overflow-hidden bg-gray-100">
                 <Image
                   src={product.image || "/placeholder.svg"}
@@ -61,15 +45,14 @@ export default function ProductShowcase() {
 
               <div className="p-4">
                 <h3 className="font-medium text-lg">{product.name}</h3>
-                <p className="text-gray-500">${product.price}</p>
+                <p className="text-gray-500">₹{product.price}</p>
                 <Button
                   className="w-full mt-3 bg-black text-white hover:bg-gray-800"
-                  onClick={() => handleAddToCart(product)}
                 >
-                  Add to Cart
+                  View Product
                 </Button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

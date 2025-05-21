@@ -6,12 +6,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Heart, Share2, ShoppingBag, Star, Truck } from "lucide-react"
+import {  Share2, ShoppingBag, Star, Truck } from "lucide-react"
 import { useCartStore } from "@/lib/store"
-import { products as allProducts } from "@/constants/product"
 import { toast } from "sonner"
+import { useProductStore } from "@/lib/productStore"
+import { useAuthStore } from "@/lib/auth"
 
-const products = allProducts
 
 type Params = {
   id: string;
@@ -22,40 +22,47 @@ type PageProps = {
 };
 
 export default function ProductPage({ params }: PageProps) {
-  const [selectedColor, setSelectedColor] = useState("")
+  
+  const { isAuthenticated } = useAuthStore()
+  const { products } = useProductStore();
   const [quantity, setQuantity] = useState("1")
-  const [activeImage, setActiveImage] = useState(0)
   const { addItem } = useCartStore()
 
   const productId = Number.parseInt(use(params).id);
   const product = products.find((p) => p.id === productId) || products[0]
 
-  // Sample images for the product
-  const productImages = [
-    `/placeholder.svg?height=600&width=600`,
-    `/placeholder.svg?height=600&width=600`,
-    `/placeholder.svg?height=600&width=600`,
-    `/placeholder.svg?height=600&width=600`,
-  ]
+  console.log("Product:", product);
 
-  const handleAddToCart = () => {
-    addItem({
-      id: product.id,
+
+  const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      toast("Please sign in to add items to your cart.", {
+        description: "You need to be logged in to add items to your cart.",
+      })
+      return
+    }
+
+    console.log("Adding to cart:", {
+      product_id: product.id,
       name: product.name,
       price: product.price,
-      color: selectedColor || product.colors[0],
+      color: product.colors[0],
+      quantity: Number.parseInt(quantity),
+      image: product.image,
+    });
+
+
+    addItem({
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      color:  product.colors[0],
       quantity: Number.parseInt(quantity),
       image: product.image,
     })
 
-    toast("Added to cart",{
-      description: `${product.name} (${selectedColor || product.colors[0]}) has been added to your cart.`,
-    })
-  }
-
-  const handleAddToWishlist = () => {
-    toast("Added to wishlist",{
-      description: `${product.name} has been added to your wishlist.`,
+    toast("Added to cart", {
+      description: `${product.name} (${ product.colors[0]}) has been added to your cart.`,
     })
   }
 
@@ -76,7 +83,7 @@ export default function ProductPage({ params }: PageProps) {
             <Link href={`/shop?category=${product.category}`} className="hover:text-gray-900">
               {product.category}
             </Link>
-            <span className="mx-2">/</span>
+            <span className="mx-2">/</span> 
             <span className="text-gray-900">{product.name}</span>
           </div>
         </div>
@@ -97,26 +104,6 @@ export default function ProductPage({ params }: PageProps) {
                   className="object-cover w-full h-full transition-all duration-300 hover:scale-105"
                 />
               </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {productImages.map((image, index) => (
-                  <button
-                    key={index}
-                    className={`aspect-square overflow-hidden rounded-md border ${
-                      activeImage === index ? "ring-2 ring-black" : ""
-                    }`}
-                    onClick={() => setActiveImage(index)}
-                  >
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`${product.name} thumbnail ${index + 1}`}
-                      width={150}
-                      height={150}
-                      className="object-cover w-full h-full"
-                    />
-                  </button>
-                ))}
-              </div>
             </div>
 
             {/* Product Info */}
@@ -133,35 +120,33 @@ export default function ProductPage({ params }: PageProps) {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-5 w-5 ${
-                      i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                    }`}
+                    className={`h-5 w-5 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                      }`}
                   />
                 ))}
                 <span className="ml-2 text-sm text-gray-500">{product.rating} (120 reviews)</span>
               </div>
 
-              <div className="text-2xl font-bold">${product.price}</div>
+              <div className="text-2xl font-bold">₹{product.price}</div>
 
               <p className="text-gray-500">{product.description}</p>
 
               <div className="space-y-4">
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <label className="text-sm font-medium">Color</label>
                   <div className="flex flex-wrap gap-2">
                     {product.colors.map((color) => (
                       <button
                         key={color}
-                        className={`px-3 py-1 rounded-full border text-sm ${
-                          selectedColor === color ? "bg-black text-white" : "hover:bg-gray-100"
-                        }`}
+                        className={`px-3 py-1 rounded-full border text-sm ${selectedColor === color ? "bg-black text-white" : "hover:bg-gray-100"
+                          }`}
                         onClick={() => setSelectedColor(color)}
                       >
                         {color}
                       </button>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Quantity</label>
@@ -189,15 +174,7 @@ export default function ProductPage({ params }: PageProps) {
                   <ShoppingBag className="mr-2 h-5 w-5" />
                   Add to Cart
                 </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-black hover:bg-gray-100 transition-transform duration-300 hover:scale-105"
-                  onClick={handleAddToWishlist}
-                >
-                  <Heart className="mr-2 h-5 w-5" />
-                  Wishlist
-                </Button>
+
                 <Button size="icon" variant="outline" className="border-black hover:bg-gray-100">
                   <Share2 className="h-5 w-5" />
                 </Button>
