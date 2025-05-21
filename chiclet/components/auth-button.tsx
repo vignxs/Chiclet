@@ -23,12 +23,12 @@ export function AuthButton() {
   const handleLogout = async () => {
     try {
       await logout()
-      toast("Logged out",{
+      toast.success("Logged out",{
         description: "You have been successfully logged out.",
       })
     } catch (error) {
       console.error(error)
-      toast("Logout failed",{
+      toast.error("Logout failed",{
         description: "An error occurred during logout. Please try again.",
       })
     }

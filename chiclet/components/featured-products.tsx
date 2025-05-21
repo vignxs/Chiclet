@@ -1,47 +1,13 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { useProductStore } from "@/lib/productStore";
 
-const featuredProducts = [
-  {
-    id: 10,
-    name: "Layered Necklace",
-    price: 29.99,
-    tag: "Limited",
-    category: "Necklaces",
-    description:
-      "Stylish layered necklace with delicate chains and subtle charms. A chic addition to your jewelry collection.",
-    colors: ["Gold", "Silver"],
-    rating: 4.7,
-    image: "https://i.pinimg.com/736x/5e/13/58/5e135834ba9cf6224c97d7717e7a5f77.jpg",
-  },
-  {
-    id: 11,
-    name: "Velvet Scrunchies",
-    price: 8.99,
-    tag: "Sale",
-    category: "Hair",
-    description:
-      "Soft velvet scrunchies in a range of rich colors. Comfortable and stylish for all-day wear.",
-    colors: ["Burgundy", "Navy", "Emerald"],
-    rating: 4.2,
-    image: "https://i.pinimg.com/736x/f1/b4/b6/f1b4b69c18c61080caa4fcdb5307c524.jpg",
-  },
-  {
-    id: 12,
-    name: "Charm Bracelet",
-    price: 17.99,
-    tag: "",
-    category: "Bracelets",
-    description:
-      "Charming bracelet featuring tiny pendants. Great for stacking or wearing as a standalone piece.",
-    colors: ["Silver", "Gold", "Rose Gold"],
-    rating: 4.4,
-    image: "https://i.pinimg.com/736x/14/78/60/147860b56438d607179a6c3215d444b8.jpg",
-  },
-];
 
 export default function FeaturedProducts() {
+    const { products: featuredProducts } = useProductStore();
   return (
     <section className="relative w-full py-20 md:py-20 mt-8 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-pink-50">
       {/* Decorative elements */}
@@ -62,7 +28,7 @@ export default function FeaturedProducts() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 relative z-10">
-          {featuredProducts.map((product) => (
+          {featuredProducts.slice(-3).map((product) => (
             <div
               key={product.id}
               className="group relative overflow-hidden rounded-lg border border-neutral-200 transition-all duration-300 hover:shadow-md dark:border-neutral-800"
@@ -80,7 +46,7 @@ export default function FeaturedProducts() {
               <div className="p-4">
                 <h3 className="font-medium text-lg">{product.name}</h3>
                 <p className="text-gray-500 mt-1 text-sm">{product.description}</p>
-                <p className="mt-2 text-black font-semibold">${product.price.toFixed(2)}</p>
+                <p className="mt-2 text-black font-semibold">₹{product.price.toFixed(2)}</p>
                 <Link href={`/shop/${product.id}`}>
                   <Button className="w-full mt-3 bg-black text-white hover:bg-gray-800">Shop Now</Button>
                 </Link>

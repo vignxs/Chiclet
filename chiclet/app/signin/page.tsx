@@ -37,7 +37,7 @@ export default function SignInPage() {
       // The success handling will occur in the callback route
     } catch (error) {
       console.error(error)
-      toast("Sign in failed", {
+      toast.error("Sign in failed", {
         description: "An error occurred during sign in. Please try again.",
       })
       setIsLoading(false)
