@@ -154,7 +154,7 @@ export default function CartPage() {
     };
 
 
-    // eslint-ignore-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paymentObject = new (window as any).Razorpay(options);
     paymentObject.open();
   };
