@@ -27,7 +27,7 @@ export function AddressCard({ address, onEdit }: AddressCardProps) {
 
   const handleDelete = () => {
     deleteAddress(address.id)
-    toast( "Address deleted",{
+    toast.success( "Address deleted",{
       description: "Your address has been successfully deleted.",
     })
     setIsDeleteDialogOpen(false)

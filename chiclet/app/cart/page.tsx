@@ -35,7 +35,7 @@ export default function CartPage() {
 
   const handleRemoveItem = (id: number) => {
     removeItem(id)
-    toast("Item removed", {
+    toast.warning("Item removed", {
       description: "The item has been removed from your cart.",
     })
   }
@@ -46,7 +46,7 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
-      toast("Please sign in", {
+      toast.error("Please sign in", {
         description: "You need to be signed in to checkout.",
       })
       router.push("/signin?redirect=/cart")
@@ -70,7 +70,7 @@ export default function CartPage() {
 
   const handleConfirmOrder = async () => {
     if (!isAuthenticated || !user || selectedAddressId === null) {
-      toast("Cannot complete checkout", {
+      toast.error("Cannot complete checkout", {
         description: "Please sign in and select a shipping address.",
       });
       return;
@@ -104,7 +104,7 @@ export default function CartPage() {
         const selectedAddress = addresses.find((address) => address.id === selectedAddressId);
 
         if (!selectedAddress) {
-          toast("Address not found", {
+          toast.error("Address not found", {
             description: "Please select a valid shipping address.",
           });
           return;
@@ -126,7 +126,7 @@ export default function CartPage() {
         );
 
         if (!order) {
-          toast("Failed to place order", {
+          toast.error("Failed to place order", {
             description: "Something went wrong. Please try again.",
           });
           return;
@@ -134,7 +134,7 @@ export default function CartPage() {
 
         clearCart();
 
-        toast("Order placed successfully!", {
+        toast.success("Order placed successfully!", {
           description: `Your order #${order.id} has been placed.`,
         });
 
@@ -161,7 +161,7 @@ export default function CartPage() {
 
   const handleClearCart = () => {
     clearCart()
-    toast("Cart cleared", {
+    toast.warning("Cart cleared", {
       description: "All items have been removed from your cart.",
     })
   }

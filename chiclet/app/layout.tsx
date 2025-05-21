@@ -29,7 +29,7 @@ export default function RootLayout({
             <div className="container mx-auto px-4 py-4">
               {children}
             </div>
-            <Toaster />
+            <Toaster theme="light" richColors toastOptions={{}} />
             <Footer />
           </div>
         </ThemeProvider>

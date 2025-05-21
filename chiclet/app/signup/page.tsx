@@ -21,7 +21,7 @@ export default function SignUpPage() {
       // The success handling will occur in the callback route
     } catch (error) {
       console.error(error)
-      toast( "Sign up failed",{
+      toast.error( "Sign up failed",{
         description: "An error occurred during sign up. Please try again.",
       })
       setIsLoading(false)

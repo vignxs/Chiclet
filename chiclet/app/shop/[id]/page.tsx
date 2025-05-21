@@ -36,7 +36,7 @@ export default function ProductPage({ params }: PageProps) {
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      toast("Please sign in to add items to your cart.", {
+      toast.error("Please sign in to add items to your cart.", {
         description: "You need to be logged in to add items to your cart.",
       })
       return
@@ -61,7 +61,7 @@ export default function ProductPage({ params }: PageProps) {
       image: product.image,
     })
 
-    toast("Added to cart", {
+    toast.success("Added to cart", {
       description: `${product.name} (${ product.colors[0]}) has been added to your cart.`,
     })
   }
@@ -287,7 +287,7 @@ export default function ProductPage({ params }: PageProps) {
                     </div>
                     <div className="p-3">
                       <h3 className="font-medium text-sm">{relatedProduct.name}</h3>
-                      <p className="text-gray-500 text-sm">${relatedProduct.price}</p>
+                      <p className="text-gray-500 text-sm">₹{relatedProduct.price}</p>
                     </div>
                   </Link>
                 ))}

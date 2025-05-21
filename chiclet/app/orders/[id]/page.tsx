@@ -71,11 +71,11 @@ export default function OrderDetailsPage({ params }: PageProps) {
     if (order && order.status === "processing") {
       cancelOrder(order.id)
       setOrder({ ...order, status: "cancelled", updated_at: new Date().toISOString() })
-      toast("Order cancelled", {
+      toast.success("Order cancelled", {
         description: `Order #${order.id} has been cancelled.`,
       })
     } else {
-      toast("Cannot cancel order", {
+      toast.error("Cannot cancel order", {
         description: `Orders that have been ${order?.status} cannot be cancelled.`,
       })
     }

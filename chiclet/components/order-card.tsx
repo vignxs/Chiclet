@@ -24,11 +24,11 @@ export function OrderCard({ order }: OrderCardProps) {
   const handleCancelOrder = () => {
     if (order.status === "processing") {
       cancelOrder(order.id)
-      toast("Order cancelled", {
+      toast.success("Order cancelled", {
         description: `Order #${order.id} has been cancelled.`,
       })
     } else {
-      toast("Cannot cancel order", {
+      toast.error("Cannot cancel order", {
         description: `Orders that have been ${order.status} cannot be cancelled.`,
       })
     }

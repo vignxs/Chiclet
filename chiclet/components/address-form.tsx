@@ -39,7 +39,7 @@ export function AddressForm({ userId, editAddress, onCancel, onSave }: AddressFo
 
     // Validate form
     if (!formData.name || !formData.street || !formData.city || !formData.state || !formData.zip || !formData.country) {
-      toast( "Missing information",{
+      toast.warning( "Missing information",{
         description: "Please fill in all fields.",
       })
       return
@@ -48,13 +48,13 @@ export function AddressForm({ userId, editAddress, onCancel, onSave }: AddressFo
     if (editAddress) {
       // Update existing address
       updateAddress(editAddress.id, formData)
-      toast("Address updated",{
+      toast.success("Address updated",{
         description: "Your address has been successfully updated.",
       })
     } else {
       // Add new address
       addAddress(userId, formData)
-      toast("Address added",{
+      toast.success("Address added",{
         description: "Your new address has been successfully added.",
       })
     }
