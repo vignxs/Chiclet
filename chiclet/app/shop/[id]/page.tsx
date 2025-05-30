@@ -46,7 +46,6 @@ export default function ProductPage({ params }: PageProps) {
       product_id: product.id,
       name: product.name,
       price: product.price,
-      color: product.colors[0],
       quantity: Number.parseInt(quantity),
       image: product.image,
     });
@@ -56,13 +55,12 @@ export default function ProductPage({ params }: PageProps) {
       product_id: product.id,
       name: product.name,
       price: product.price,
-      color:  product.colors[0],
       quantity: Number.parseInt(quantity),
       image: product.image,
     })
 
     toast.success("Added to cart", {
-      description: `${product.name} (${ product.colors[0]}) has been added to your cart.`,
+      description: `${product.name} has been added to your cart.`,
     })
   }
 
@@ -132,22 +130,6 @@ export default function ProductPage({ params }: PageProps) {
               <p className="text-gray-500">{product.description}</p>
 
               <div className="space-y-4">
-                {/* <div className="space-y-2">
-                  <label className="text-sm font-medium">Color</label>
-                  <div className="flex flex-wrap gap-2">
-                    {product.colors.map((color) => (
-                      <button
-                        key={color}
-                        className={`px-3 py-1 rounded-full border text-sm ${selectedColor === color ? "bg-black text-white" : "hover:bg-gray-100"
-                          }`}
-                        onClick={() => setSelectedColor(color)}
-                      >
-                        {color}
-                      </button>
-                    ))}
-                  </div>
-                </div> */}
-
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Quantity</label>
                   <Select value={quantity} onValueChange={setQuantity}>
@@ -218,7 +200,6 @@ export default function ProductPage({ params }: PageProps) {
                   <h4 className="font-medium">Product Details</h4>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Material: High-quality materials</li>
-                    <li>Available Colors: {product.colors.join(",")}</li>
                     <li>Care Instructions: Gentle cleaning with soft cloth</li>
                     <li>Packaging: Comes in a gift-ready box</li>
                   </ul>
