@@ -66,7 +66,7 @@ export function CheckoutConfirmation({
             Confirm Your Order
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You're placing an order for ${total.toFixed(2)}. Select or add a delivery address to proceed.
+            You&apos;re placing an order for ${total.toFixed(2)}. Select or add a delivery address to proceed.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
