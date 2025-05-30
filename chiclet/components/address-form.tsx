@@ -34,33 +34,40 @@ export function AddressForm({ userId, editAddress, onCancel, onSave }: AddressFo
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     // Validate form
     if (!formData.name || !formData.street || !formData.city || !formData.state || !formData.zip || !formData.country) {
-      toast.warning( "Missing information",{
+      toast.warning("Missing information", {
         description: "Please fill in all fields.",
       })
       return
     }
 
     if (editAddress) {
-      // Update existing address
       updateAddress(editAddress.id, formData)
-      toast.success("Address updated",{
+      toast.success("Address updated", {
         description: "Your address has been successfully updated.",
       })
+      onSave()
     } else {
-      // Add new address
-      addAddress(userId, formData)
-      toast.success("Address added",{
-        description: "Your new address has been successfully added.",
-      })
-    }
+      // ✅ WAIT for Supabase response
+      const result = await addAddress(userId, formData)
 
-    onSave()
+      if (result) {
+        toast.success("Address added", {
+          description: "Your new address has been successfully added.",
+        })
+        onSave() // Only call onSave if DB insert succeeded
+      } else {
+        toast.error("Error", {
+          description: "Failed to save address. Try again.",
+        })
+      }
+    }
   }
+
 
   return (
     <div className="border rounded-lg p-6 bg-white shadow-sm">

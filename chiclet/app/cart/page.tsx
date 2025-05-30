@@ -12,8 +12,6 @@ import { useAuthStore } from "@/lib/auth"
 import { useOrdersStore } from "@/lib/orders"
 import { useAddressStore } from "@/lib/address-store"
 import { CheckoutConfirmation } from "@/components/checkout-confirmation"
-import { AddressSelector } from "@/components/address-selector"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { toast } from "sonner"
 import { loadRazorpay } from "@/lib/utils"
 
@@ -25,8 +23,6 @@ export default function CartPage() {
   const router = useRouter()
 
   const [isCheckoutConfirmOpen, setIsCheckoutConfirmOpen] = useState(false)
-  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null)
-  const [isAddressSheetOpen, setIsAddressSheetOpen] = useState(false)
 
   const handleUpdateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return
@@ -53,22 +49,14 @@ export default function CartPage() {
       return
     }
 
-    // Check if user has addresses
-    const addresses = getAddressesByUserId(user?.id || "")
-    if (addresses.length === 0) {
-      setIsAddressSheetOpen(true)
-      return
-    }
-
-    // If user has addresses but none selected, select the first one
-    if (selectedAddressId === null && addresses.length > 0) {
-      setSelectedAddressId(addresses[0].id)
-    }
-
     setIsCheckoutConfirmOpen(true)
   }
 
-  const handleConfirmOrder = async () => {
+  const handleConfirmOrder = async (selectedAddressId: number) => {
+    if (!selectedAddressId) {
+      console.error("No address selected")
+      return
+    }
     if (!isAuthenticated || !user || selectedAddressId === null) {
       toast.error("Cannot complete checkout", {
         description: "Please sign in and select a shipping address.",
@@ -226,7 +214,6 @@ export default function CartPage() {
                       <Link href={`/shop/${item.id}`} className="font-medium hover:underline">
                         {item.name}
                       </Link>
-                      {item.color && <div className="text-sm text-gray-500">Color: {item.color}</div>}
                       <button
                         className="text-sm text-red-500 hover:text-red-700 flex items-center mt-1 md:hidden"
                         onClick={() => handleRemoveItem(item.id)}
@@ -314,39 +301,14 @@ export default function CartPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Sheet open={isAddressSheetOpen} onOpenChange={setIsAddressSheetOpen}>
-                    <SheetTrigger asChild>
-                      <Button
-                        className="w-full bg-black text-white hover:bg-gray-800 transition-transform duration-300 hover:scale-105"
-                        onClick={handleCheckout}
-                      >
-                        Checkout
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent className="sm:max-w-md">
-                      <SheetHeader>
-                        <SheetTitle>Shipping Address</SheetTitle>
-                        <SheetDescription>Select or add a shipping address for your order.</SheetDescription>
-                      </SheetHeader>
-                      <div className="py-6">
-                        <AddressSelector
-                          userId={user?.id || ""}
-                          selectedAddressId={selectedAddressId}
-                          onSelectAddress={(addressId) => {
-                            setSelectedAddressId(addressId)
-                            // If user has selected an address, close the sheet and open checkout confirmation
-                            if (isAuthenticated && user) {
-                              setIsAddressSheetOpen(false)
-                              setIsCheckoutConfirmOpen(true)
-                            }
-                          }}
-                        />
-                      </div>
-                    </SheetContent>
-                  </Sheet>
-
-                  <div className="text-xs text-gray-500 text-center">Secure checkout powered by Stripe</div>
+                  <Button
+                    className="w-full bg-black text-white hover:bg-gray-800 transition-transform duration-300 hover:scale-105"
+                    onClick={handleCheckout}
+                  >
+                    Checkout
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <div className="text-xs text-gray-500 text-center">Secure checkout powered by RazorPay</div>
                 </div>
 
                 {/* Promo Code */}
@@ -366,12 +328,13 @@ export default function CartPage() {
       </section>
 
       {/* Checkout Confirmation Dialog */}
-      <CheckoutConfirmation
+     <CheckoutConfirmation
+        userId={user?.id ?? ""}
         isOpen={isCheckoutConfirmOpen}
         onOpenChange={setIsCheckoutConfirmOpen}
         onConfirm={handleConfirmOrder}
         total={total}
-      />
+      /> 
     </main>
   )
 }

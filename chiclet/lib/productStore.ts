@@ -8,7 +8,6 @@ export type Product = {
     tag: string;
     category: string;
     description: string;
-    colors: string[];
     rating: number;
     image: string;
   };
@@ -38,8 +37,7 @@ export const useProductStore = create<ProductStore>((set) => ({
         category,
         description,
         rating,
-        image,
-        product_colors (color)
+        image
       `);
 
     console.log("Products data:", data);
@@ -47,11 +45,7 @@ export const useProductStore = create<ProductStore>((set) => ({
     if (error) {
       set({ error: error.message, loading: false });
     } else {
-      const productsWithColors = data?.map((product) => ({
-        ...product,
-        colors: product.product_colors.map((c) => c.color),
-      })) as Product[];
-      set({ products: productsWithColors || [], loading: false });
+      set({ products: data || [], loading: false });
     }
   },
 }));

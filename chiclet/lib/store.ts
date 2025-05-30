@@ -7,7 +7,6 @@ export type CartItem = {
   id: number
   product_id: number
   name: string
-  color?: string
   quantity: number
   image: string;
   price: number;
@@ -58,7 +57,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
     if (!user) return
 
     const existing = get().items.find(
-      (item) => item.product_id === newItem.product_id && item.color === newItem.color, // Changed to product_id
+      (item) => item.product_id === newItem.product_id // Changed to product_id
     )
 
     let updatedItem
@@ -74,7 +73,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
         .update({ quantity: updatedItem.quantity })
         .eq("user_id", user.id)
         .eq("product_id", existing.product_id) // Changed to existing.product_id
-        .eq("color", existing.color || null) // Changed to existing.color
 
       if (error) {
         console.error("Error updating quantity:", error)
@@ -83,7 +81,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
       set((state) => ({
         items: state.items.map((item) =>
-          item.product_id === updatedItem!.product_id && item.color === updatedItem!.color // Changed to product_id
+          item.product_id === updatedItem!.product_id
             ? updatedItem!
             : item,
         ),
@@ -95,7 +93,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
         name: newItem.name,
         image: newItem.image,
         price: newItem.price,
-        color: newItem.color,    
         quantity: newItem.quantity,
       }
       const { data, error } = await supabase.from("cart_items").insert([itemToInsert]).select('*'); //added .select('*')
