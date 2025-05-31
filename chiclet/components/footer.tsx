@@ -38,6 +38,33 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Categories */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium">Categories</h3>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li>
+                <Link href="/shop?category=Earrings" className="hover:text-pink-500 transition-colors">
+                  Earrings
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop?category=Necklaces" className="hover:text-pink-500 transition-colors">
+                  Necklaces
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop?category=Hair" className="hover:text-pink-500 transition-colors">
+                  Hair
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop?category=Bracelets" className="hover:text-pink-500 transition-colors">
+                  Bracelets
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Legal Links */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium">Legal Links</h3>
@@ -64,7 +91,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
           {/* Support & Contact */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium">Support & Contact</h3>
@@ -92,41 +118,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Stay Connect */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium">Stay Connect</h3>
-            <div className="flex space-x-4">
-              <Link href="#" className="text-gray-500 hover:text-pink-500 transition-colors">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link href="#" className="text-gray-500 hover:text-pink-500 transition-colors">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </Link>
-              <Link href="#" className="text-gray-500 hover:text-pink-500 transition-colors">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link href="#" className="text-gray-500 hover:text-pink-500 transition-colors">
-                <Mail className="h-5 w-5" />
-                <span className="sr-only">Email</span>
-              </Link>
-            </div>
-            <div className="mt-4">
-              <p className="text-sm text-gray-500">Subscribe to our newsletter</p>
-              <div className="mt-2 flex">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 min-w-0 px-3 py-2 text-sm border border-neutral-200 rounded-l-md focus:outline-none focus:ring-1 focus:ring-pink-500 dark:border-neutral-800"
-                />
-                <button className="px-3 py-2 text-sm font-medium text-white bg-black rounded-r-md hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-pink-500">
-                  Subscribe
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t">
@@ -134,6 +125,7 @@ export default function Footer() {
             <Link
               href="/"
               className="inline-block font-extrabold text-[60px] sm:text-[50px] md:text-[120px] lg:text-[160px] xl:text-[200px] 2xl:text-[220px] leading-none tracking-tight mb-4"
+              style={{ fontFamily: "'Glida Display', serif" }}
             >
               LPR Designs
             </Link>

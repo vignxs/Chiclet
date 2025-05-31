@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -17,28 +17,31 @@ const categories = ["All", "Earrings", "Necklaces", "Bracelets", "Hair", "Rings"
 export default function ShopPage() {
   const { products: allProducts } = useProductStore();
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(["All"])
+  const [selectedCategory, setSelectedCategory] = useState<string>("All")
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50])
   const [sortBy, setSortBy] = useState("newest")
   const [showFilters, setShowFilters] = useState(false)
 
-  // Handle category selection
-  const handleCategoryChange = (category: string, checked: boolean) => {
-    if (category === "All" && checked) {
-      setSelectedCategories(["All"])
-    } else {
-      const newCategories = selectedCategories.filter((c) => c !== "All")
-      if (checked) {
-        setSelectedCategories([...newCategories, category])
-      } else {
-        setSelectedCategories(newCategories.filter((c) => c !== category))
-      }
-
-      // If no categories are selected, select "All"
-      if (newCategories.length === 0 && !checked) {
-        setSelectedCategories(["All"])
-      }
+  // Get category from URL parameter
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const category = urlParams.get('category')
+    if (category && categories.includes(category)) {
+      setSelectedCategory(category)
     }
+  }, [])
+
+  // Handle category selection
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    // Update URL with selected category
+    const url = new URL(window.location.href)
+    if (category === "All") {
+      url.searchParams.delete("category")
+    } else {
+      url.searchParams.set("category", category)
+    }
+    window.history.pushState({}, '', url.toString())
   }
 
   // Apply filters
@@ -50,7 +53,7 @@ export default function ShopPage() {
       product.category.toLowerCase().includes(searchTerm.toLowerCase())
 
     // Category filter
-    const matchesCategory = selectedCategories.includes("All") || selectedCategories.includes(product.category)
+    const matchesCategory = selectedCategory === "All" || selectedCategory === product.category
 
     // Price filter
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
@@ -128,10 +131,13 @@ export default function ShopPage() {
                   <div className="space-y-2">
                     {categories.map((category) => (
                       <div key={category} className="flex items-center space-x-2">
-                        <Checkbox
+                        <input
+                          type="radio"
                           id={`category-${category}`}
-                          checked={selectedCategories.includes(category)}
-                          onCheckedChange={(checked) => handleCategoryChange(category, checked === true)}
+                          name="category"
+                          checked={selectedCategory === category}
+                          onChange={() => handleCategoryChange(category)}
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <Label htmlFor={`category-${category}`} className="text-sm">
                           {category}
@@ -197,7 +203,8 @@ export default function ShopPage() {
                     className="mt-4"
                     onClick={() => {
                       setSearchTerm("")
-                      setSelectedCategories(["All"])
+                      setSearchTerm("")
+                      setSelectedCategory("All")
                       setPriceRange([0, 50])
                     }}
                   >

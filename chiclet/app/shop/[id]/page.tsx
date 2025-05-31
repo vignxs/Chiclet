@@ -22,16 +22,28 @@ type PageProps = {
 };
 
 export default function ProductPage({ params }: PageProps) {
-  
   const { isAuthenticated } = useAuthStore()
   const { products } = useProductStore();
   const [quantity, setQuantity] = useState("1")
   const { addItem } = useCartStore()
 
   const productId = Number.parseInt(use(params).id);
-  const product = products.find((p) => p.id === productId) || products[0]
+  const product = products.find((p) => p.id === productId);
 
-  console.log("Product:", product);
+  // If product is not found, redirect to shop page
+  if (!product) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+          <p className="text-gray-500 mb-6">The product you're looking for doesn't exist.</p>
+          <Link href="/shop" className="text-pink-600 hover:text-pink-700">
+            Go back to shop
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
 
   const handleAddToCart = async () => {
@@ -78,10 +90,14 @@ export default function ProductPage({ params }: PageProps) {
               Shop
             </Link>
             <span className="mx-2">/</span>
-            <Link href={`/shop?category=${product.category}`} className="hover:text-gray-900">
-              {product.category}
-            </Link>
-            <span className="mx-2">/</span> 
+            {product.category && (
+              <>
+                <Link href={`/shop?category=${product.category}`} className="hover:text-gray-900">
+                  {product.category}
+                </Link>
+                <span className="mx-2">/</span>
+              </>
+            )}
             <span className="text-gray-900">{product.name}</span>
           </div>
         </div>
