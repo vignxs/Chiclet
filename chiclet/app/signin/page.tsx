@@ -7,6 +7,7 @@ import { useAuthStore } from "@/lib/auth"
 import { Loader2 } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
 import { toast } from "sonner"
+import { sendWelcomeEmail } from "@/lib/sendEmail"
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,22 +18,6 @@ export default function SignInPage() {
 
     try {
       await signInWithGoogle()
-      const res = await fetch('/api/sendemail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: 'vsivakumar@affinityexpress.com',
-          name: 'Vignesh',
-          type: 'welcome',
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to send email');
-      }
-
-      const data = await res.json();
-      console.log('Email sent:', data);
       // The redirect to the OAuth provider will happen automatically
       // The success handling will occur in the callback route
     } catch (error) {
