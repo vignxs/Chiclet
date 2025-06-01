@@ -11,7 +11,7 @@ export default function AboutUs() {
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-pink-100 rounded-full opacity-50"></div>
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-pink-200 rounded-full opacity-40"></div>
               <Image
-                src="https://res.cloudinary.com/dpkyadzjo/image/upload/v1747064135/unnamed_ckrsxx.png?height=600&width=600"
+                src="/logo_2.png"
                 alt="About LPR Designs"
                 width={600}
                 height={600}

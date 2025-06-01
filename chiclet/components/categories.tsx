@@ -5,7 +5,7 @@ export default function Categories() {
   const categories = [
     { name: "Earrings", image: "https://img.freepik.com/premium-photo/gold-jhumka_1188452-6995.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
     { name: "Necklaces", image: "https://img.freepik.com/free-photo/young-woman-exudes-elegance-traditional-sari-generated-by-ai_188544-38358.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
-    { name: "Hair Accessories", image: "https://img.freepik.com/free-photo/luxury-bouquet-ornate-yellow-flower-petals-generated-by-ai_188544-41814.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
+    { name: "Hair", image: "https://img.freepik.com/free-photo/luxury-bouquet-ornate-yellow-flower-petals-generated-by-ai_188544-41814.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
     { name: "Bracelets", image: "https://img.freepik.com/free-photo/multi-colored-gemstone-jewelry-symbol-elegance-generated-by-ai_188544-27715.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
   ]
 
@@ -25,7 +25,7 @@ export default function Categories() {
           {categories.map((category, i) => (
             <Link
               key={i}
-              href="/shop"
+              href={`/shop?category=${category.name}`}
               className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-md"
             >
               <div className="aspect-square overflow-hidden bg-gray-100">

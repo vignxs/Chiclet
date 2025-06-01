@@ -12,7 +12,7 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false)
   const { signInWithGoogle } = useAuthStore()
 
-  const handleGoogleSignUp = async () => {
+  const handleGoogleSignIn = async () => {
     setIsLoading(true)
 
     try {
@@ -21,7 +21,7 @@ export default function SignUpPage() {
       // The success handling will occur in the callback route
     } catch (error) {
       console.error(error)
-      toast.error( "Sign up failed",{
+      toast.error("Sign up failed", {
         description: "An error occurred during sign up. Please try again.",
       })
       setIsLoading(false)
@@ -46,7 +46,7 @@ export default function SignUpPage() {
 
         <div className="mt-8 space-y-6">
           <Button
-            onClick={handleGoogleSignUp}
+            onClick={handleGoogleSignIn}
             disabled={isLoading}
             className="w-full flex items-center justify-center py-6 border border-gray-300 rounded-md shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
           >
