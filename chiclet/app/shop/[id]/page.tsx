@@ -36,7 +36,7 @@ export default function ProductPage({ params }: PageProps) {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-          <p className="text-gray-500 mb-6">The product you're looking for doesn't exist.</p>
+          <p className="text-gray-500 mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
           <Link href="/shop" className="text-pink-600 hover:text-pink-700">
             Go back to shop
           </Link>

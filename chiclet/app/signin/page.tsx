@@ -7,7 +7,6 @@ import { useAuthStore } from "@/lib/auth"
 import { Loader2 } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
 import { toast } from "sonner"
-import { sendWelcomeEmail } from "@/lib/sendEmail"
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
