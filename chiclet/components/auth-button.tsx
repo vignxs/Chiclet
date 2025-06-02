@@ -38,7 +38,7 @@ export function AuthButton() {
     return (
       <div className="flex items-center space-x-2">
         <Link href="/signin">
-          <Button variant="ghost" size="sm" className="text-sm">
+          <Button variant="ghost" size="sm" className="text-sm text-white">
             Sign In
           </Button>
         </Link>
