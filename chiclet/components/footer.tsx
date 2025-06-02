@@ -1,3 +1,4 @@
+import { Instagram } from "lucide-react"
 import Link from "next/link"
 
 export default function Footer() {
@@ -37,9 +38,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-gray-500 hover:text-pink-500 transition-colors"
                 >
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M7.5 2C4.5 2 2 4.5 2 7.5v9C2 19.5 4.5 22 7.5 22h9c3 0 5.5-2.5 5.5-5.5v-9C22 4.5 19.5 2 16.5 2h-9zM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm6.5-2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-6.5 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-                  </svg>
+                  <Instagram className="h-5 w-5" />
                   <span>Instagram</span>
                 </Link>
               </li>
