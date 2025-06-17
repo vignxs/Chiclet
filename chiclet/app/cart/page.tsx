@@ -66,7 +66,7 @@ export default function CartPage() {
 
     const res = await fetch('/api/createorder', {
       method: 'POST',
-      body: JSON.stringify({ amount: 499, currency: 'INR' }),
+      body: JSON.stringify({ amount: total, currency: 'INR' }),
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -82,12 +82,11 @@ export default function CartPage() {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
       amount: data.amount,
       currency: data.currency,
-      name: 'Your Store Name',
-      description: 'Test Transaction',
+      name: 'LPR Designs',
+      description: 'Order Transaction',
       order_id: data.id,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       handler: async function (response: any) {
-        // ✅ Proceed ONLY after successful payment
         const addresses = getAddressesByUserId(user.id);
         const selectedAddress = addresses.find((address) => address.id === selectedAddressId);
 
@@ -128,16 +127,8 @@ export default function CartPage() {
 
         router.push(`/orders/${order.id}`);
       },
-      prefill: {
-        name: 'Vignesh',
-        email: 'vignesh@example.com',
-        contact: '9000090000',
-      },
-      notes: {
-        address: 'Test address',
-      },
       theme: {
-        color: '#74347c',
+        color: '#00214e',
       },
     };
 
