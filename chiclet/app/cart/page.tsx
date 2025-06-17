@@ -37,7 +37,7 @@ export default function CartPage() {
   }
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = subtotal > 50 ? 0 : 5.99
+  const shipping = subtotal > 50 ? 0 : 1.00
   const total = subtotal + shipping
 
   const handleCheckout = () => {
