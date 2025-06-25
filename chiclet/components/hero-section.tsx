@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { TypewriterEffect } from "@/components/typewriter-effect"
-import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { TypewriterEffect } from "@/components/typewriter-effect";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const words = [
     {
@@ -31,9 +31,9 @@ export default function HeroSection() {
       text: "LPR",
       className: "text-pink-400",
     },
-  ]
+  ];
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
     <section className="relative w-full py-20 md:py-32 rounded-2xl overflow-hidden bg-gradient-to-b from-white to-pink-50">
@@ -73,8 +73,9 @@ export default function HeroSection() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
               >
-                Discover our curated collection of trendy accessories that add the perfect finishing touch to every
-                outfit. Handcrafted with love for the modern fashionista.
+                Discover our curated collection of trendy accessories that add
+                the perfect finishing touch to every outfit. Handcrafted with
+                love for the modern fashionista.
               </motion.p>
             </div>
 
@@ -92,13 +93,15 @@ export default function HeroSection() {
                   Shop Now
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-black text-black hover:bg-gray-100 transition-all duration-300 hover:scale-105"
-              >
-                View Collections
-              </Button>
+              <Link href="/shop">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-black text-black hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+                >
+                  View Collections
+                </Button>
+              </Link>
             </motion.div>
 
             {/* Featured badges */}
@@ -139,7 +142,11 @@ export default function HeroSection() {
               <motion.div
                 className="absolute -top-5 -right-5 w-20 h-20 rounded-full shadow-lg overflow-hidden border-4 border-white z-20"
                 animate={{ y: [0, -10, 0] }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3, ease: "easeInOut" }}
+                transition={{
+                  repeat: Number.POSITIVE_INFINITY,
+                  duration: 3,
+                  ease: "easeInOut",
+                }}
               >
                 <Image
                   src="/Earrings2.jpeg?height=80&width=80"
@@ -153,7 +160,11 @@ export default function HeroSection() {
               <motion.div
                 className="absolute -bottom-3 -left-3 w-16 h-16 rounded-full shadow-lg overflow-hidden border-4 border-white z-20"
                 animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2.5, ease: "easeInOut" }}
+                transition={{
+                  repeat: Number.POSITIVE_INFINITY,
+                  duration: 2.5,
+                  ease: "easeInOut",
+                }}
               >
                 <Image
                   src="/Bracelet.jpeg?height=64&width=64"
@@ -181,7 +192,11 @@ export default function HeroSection() {
                 animate={{
                   backgroundPosition: ["200% 200%", "-200% -200%"],
                 }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 10, ease: "easeInOut" }}
+                transition={{
+                  repeat: Number.POSITIVE_INFINITY,
+                  duration: 10,
+                  ease: "easeInOut",
+                }}
                 style={{ backgroundSize: "200% 200%" }}
               />
             </div>
@@ -189,6 +204,5 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
