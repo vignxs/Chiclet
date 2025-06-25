@@ -5,7 +5,7 @@ export default function Categories() {
   const categories = [
     { name: "Earrings", image: "https://img.freepik.com/premium-photo/gold-jhumka_1188452-6995.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
     { name: "Necklaces", image: "https://img.freepik.com/free-photo/young-woman-exudes-elegance-traditional-sari-generated-by-ai_188544-38358.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
-    { name: "Hair", image: "https://img.freepik.com/free-photo/luxury-bouquet-ornate-yellow-flower-petals-generated-by-ai_188544-41814.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
+    { name: "Bangles", image: "https://img.freepik.com/free-photo/close-up-hindu-bride-s-hands-covered-with-henna-tattoos_8353-8859.jpg?ga=GA1.1.1175264985.1744437286&semt=ais_items_boosted&w=740" },
     { name: "Bracelets", image: "https://img.freepik.com/free-photo/multi-colored-gemstone-jewelry-symbol-elegance-generated-by-ai_188544-27715.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
   ]
 

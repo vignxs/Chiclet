@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 
 export default function AboutUs() {
   return (
@@ -54,10 +53,6 @@ export default function AboutUs() {
                 </p>
               </div>
             </div>
-
-            <Button className="bg-black text-white hover:bg-gray-800 transition-transform duration-300 hover:scale-105">
-              Learn More
-            </Button>
           </div>
         </div>
       </div>

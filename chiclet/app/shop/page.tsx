@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Filter, Search } from "lucide-react"
 import { useProductStore } from "@/lib/productStore"
 
-const categories = ["All", "Earrings", "Necklaces", "Bracelets", "Hair", "Rings", "Anklets"]
+const categories = ["All", "Earrings", "Necklaces", "Bangles"]
 
 export default function ShopPage() {
   const { products: allProducts } = useProductStore();

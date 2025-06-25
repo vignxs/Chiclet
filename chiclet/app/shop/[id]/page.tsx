@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import {  Share2, ShoppingBag, Star, Truck } from "lucide-react"
+import {  Share2, ShoppingBag, Star } from "lucide-react"
 import { useCartStore } from "@/lib/store"
 import { toast } from "sonner"
 import { useProductStore } from "@/lib/productStore"
@@ -179,10 +179,10 @@ export default function ProductPage({ params }: PageProps) {
               </div>
 
               <div className="pt-4 border-t space-y-3">
-                <div className="flex items-center text-sm">
+                {/* <div className="flex items-center text-sm">
                   <Truck className="mr-2 h-4 w-4" />
                   <span>Free shipping on orders over $50</span>
-                </div>
+                </div> */}
                 <div className="flex items-center text-sm">
                   <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
                   <span>In stock and ready to ship</span>
@@ -197,7 +197,7 @@ export default function ProductPage({ params }: PageProps) {
               <TabsList className="w-full justify-start border-b rounded-none">
                 <TabsTrigger value="description">Description</TabsTrigger>
                 <TabsTrigger value="details">Details</TabsTrigger>
-                <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                {/* <TabsTrigger value="reviews">Reviews</TabsTrigger> */}
               </TabsList>
               <TabsContent value="description" className="pt-4">
                 <div className="space-y-4">
@@ -221,7 +221,7 @@ export default function ProductPage({ params }: PageProps) {
                   </ul>
                 </div>
               </TabsContent>
-              <TabsContent value="reviews" className="pt-4">
+              {/* <TabsContent value="reviews" className="pt-4">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium">Customer Reviews</h4>
@@ -256,7 +256,7 @@ export default function ProductPage({ params }: PageProps) {
                     ))}
                   </div>
                 </div>
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
           </div>
 
