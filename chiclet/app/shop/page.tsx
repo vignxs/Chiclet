@@ -15,9 +15,11 @@ const categories = ["All", "Earrings", "Necklaces", "Bangles"]
 
 export default function ShopPage() {
   const { products: allProducts } = useProductStore();
+
+  console.log("All Products:", allProducts.length, allProducts)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string>("All")
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50])
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000])
   const [sortBy, setSortBy] = useState("newest")
   const [showFilters, setShowFilters] = useState(false)
 
@@ -150,15 +152,15 @@ export default function ShopPage() {
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium">Price Range</h3>
                   <Slider
-                    defaultValue={[0, 50]}
-                    max={50}
-                    step={1}
+                    defaultValue={[0, 5000]}
+                    max={5000}
+                    step={500}
                     value={priceRange}
                     onValueChange={(value) => setPriceRange(value as [number, number])}
                   />
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">${priceRange[0]}</span>
-                    <span className="text-sm">${priceRange[1]}</span>
+                    <span className="text-sm">{priceRange[0]}</span>
+                    <span className="text-sm">{priceRange[1]}</span>
                   </div>
                 </div>
 
