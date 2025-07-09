@@ -23,6 +23,11 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState("newest")
   const [showFilters, setShowFilters] = useState(false)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const PRODUCTS_PER_PAGE = 9 
+
+  
+
   // Get category from URL parameter
   React.useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -75,6 +80,16 @@ export default function ShopPage() {
         return a.tag === "New" ? -1 : b.tag === "New" ? 1 : 0
     }
   })
+
+  const totalPages        = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE)
+  const paginatedProducts = sortedProducts.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+     currentPage      * PRODUCTS_PER_PAGE
+  )
+
+  const goToPage   = (page: number) => setCurrentPage(page)
+  const nextPage   = () => setCurrentPage((p) => Math.min(p + 1, totalPages))
+  const prevPage   = () => setCurrentPage((p) => Math.max(p - 1, 1))
 
   const applyFilters = () => {
     // Filters are already applied reactively
@@ -196,7 +211,7 @@ export default function ShopPage() {
                 </Button>
               </div>
 
-              {sortedProducts.length === 0 ? (
+              {paginatedProducts.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-500">No products match your filters.</p>
                   <Button
@@ -214,7 +229,7 @@ export default function ShopPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-animation">
-                  {sortedProducts.map((product) => (
+                  {paginatedProducts.map((product) => (
                     <Link
                       href={`/shop/${product.id}`}
                       key={product.id}
@@ -252,21 +267,35 @@ export default function ShopPage() {
               )}
 
               {/* Pagination */}
-              {sortedProducts.length > 0 && (
+              {totalPages > 1 && (
                 <div className="flex items-center justify-center space-x-2 mt-12">
-                  <Button variant="outline" size="sm" disabled>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={prevPage}
+                    disabled={currentPage === 1}
+                  >
                     Previous
                   </Button>
-                  <Button variant="outline" size="sm" className="bg-black text-white hover:bg-gray-800">
-                    1
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    2
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    3
-                  </Button>
-                  <Button variant="outline" size="sm">
+
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      size="sm"
+                      className={currentPage === i + 1 ? "bg-black text-white hover:bg-gray-800" : ""}
+                      onClick={() => goToPage(i + 1)}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={nextPage}
+                    disabled={currentPage === totalPages}
+                  >
                     Next
                   </Button>
                 </div>
