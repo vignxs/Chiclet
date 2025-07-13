@@ -79,50 +79,56 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-     
-        </div>
-             <div className="flex flex-col gap-4 sm:gap-6 md:gap-8">
-            <h3 className="text-sm font-medium text-gray-700">Follow Us</h3>
-            <ul className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 text-gray-500">
-              {/* Instagram */}
-              <li className="flex items-center gap-2 text-sm hover:text-pink-500 transition-colors">
-                <a
+          <div className="flex flex-col gap-4">
+            <h3 className="text-sm font-medium">Follow Us</h3>
+            <ul className="flex items-center justify-between gap-4 text-gray-500 ">
+              <li>
+                <Link
                   href="https://www.instagram.com/lprdesigns"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-pink-500 transition-colors"
                 >
                   <Instagram className="h-5 w-5" />
                   <span>Instagram</span>
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="mailto:lprdesigns2025@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-pink-500 transition-colors"
+                >
+                  <MailIcon className="h-5 w-5" />
+                  <span>Email</span>
                 </a>
               </li>
-
-              {/* Email */}
-              <li className="flex items-center gap-2 text-sm">
-                <MailIcon className="h-5 w-5" />
-                <span className="break-all">lprdesigns2025@gmail.com</span>
+              <li>
+                <a
+                  href="tel:+919677004469"
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-500 transition-colors"
+                >
+                  <PhoneIcon className="h-5 w-5" />
+                  <span>Call Us</span>
+                </a>
               </li>
-
-              {/* Phone */}
-              <li className="flex items-center gap-2 text-sm">
-                <PhoneIcon className="h-5 w-5" />
-                <span>+91 96770 04469</span>
-              </li>
-
-              {/* WhatsApp */}
-              <li className="flex items-center gap-2 text-sm hover:text-green-500 transition-colors">
+              <li>
                 <a
                   href="https://wa.me/918870184209?text=Hello%2C%20I%20would%20like%20to%20connect!"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-green-500 transition-colors"
                 >
                   <WhatsAppIcon className="h-5 w-5" />
-                  <span>WhatsApp</span>
+                  <span>WhatsApp (Support)</span>
                 </a>
               </li>
+
+              {/* Add other icons like Facebook, Twitter here if needed */}
             </ul>
           </div>
+        </div>
 
         <div className="mt-12 pt-8 border-t">
           <div className="text-center">
