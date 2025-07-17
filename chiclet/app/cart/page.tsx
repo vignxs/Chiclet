@@ -37,7 +37,7 @@ export default function CartPage() {
   }
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = 0
+  const shipping = 100
   const total = subtotal + shipping
 
   const handleCheckout = () => {
@@ -283,7 +283,7 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Shipping</span>
-                    <span>Free</span>
+                    <span>₹{shipping}</span>
                   </div>
                   <div className="border-t pt-3 mt-3 flex justify-between font-bold">
                     <span>Total</span>
