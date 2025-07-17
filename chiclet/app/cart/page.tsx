@@ -202,7 +202,7 @@ export default function CartPage() {
                       />
                     </div>
                     <div>
-                      <Link href={`/shop/${item.id}`} className="font-medium hover:underline">
+                      <Link href={`/shop/${item.product_id}`} className="font-medium hover:underline">
                         {item.name}
                       </Link>
                       <button
