@@ -1,102 +1,60 @@
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { supabase } from "./supabase"
 
-import type { User } from "@supabase/supabase-js"
-import { supabase } from "./supabaseClient"
-
-type AuthState = {
-  user: User | null
-  isAuthenticated: boolean
-  isAuthLoading: boolean // 👈 ADD THIS
-  signInWithGoogle: () => Promise<void>
-  logout: () => Promise<void>
-}
-
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: null,
-      isAuthenticated: false,
-      isAuthLoading: true, // 👈 INITIALLY TRUE
-      signInWithGoogle: async () => {
-        try {
-          const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-              redirectTo: `${window.location.origin}/auth/callback`,
-            },
-          })
-
-          if (error) {
-            console.error("Error signing in with Google:", error)
-            throw error
-          }
-        } catch (error) {
-          console.error("Unexpected error during Google sign-in:", error)
-          throw error
-        }
-      },
-      logout: async () => {
-        try {
-          const { error } = await supabase.auth.signOut()
-
-          if (error) {
-            console.error("Error signing out:", error)
-            throw error
-          }
-
-          set({
-            user: null,
-            isAuthenticated: false,
-            isAuthLoading: false, // 👈 RESET LOADING
-          })
-        } catch (error) {
-          console.error("Unexpected error during sign-out:", error)
-          throw error
-        }
-      },
-    }),
-    {
-      name: "chiclet-auth",
-      onRehydrateStorage: () => {
-        return (rehydratedState) => {
-          const checkUser = async () => {
-            const { data } = await supabase.auth.getUser()
-            if (data.user) {
-              console.log("User found in session:", data.user)
-              useAuthStore.setState({
-                user: data.user,
-                isAuthenticated: true,
-                isAuthLoading: false, // ✅ AUTH DONE
-              })
-            } else {
-              useAuthStore.setState({
-                user: null,
-                isAuthenticated: false,
-                isAuthLoading: false, // ✅ AUTH DONE
-              })
-            }
-          }
-
-          checkUser()
-
-          supabase.auth.onAuthStateChange((event, session) => {
-            if (event === "SIGNED_IN" && session?.user) {
-              useAuthStore.setState({
-                user: session.user,
-                isAuthenticated: true,
-                isAuthLoading: false,
-              })
-            } else if (event === "SIGNED_OUT") {
-              useAuthStore.setState({
-                user: null,
-                isAuthenticated: false,
-                isAuthLoading: false,
-              })
-            }
-          })
-        }
+export const signInWithGoogle = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${window.location.origin}/auth/callback`,
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
       },
     },
-  ),
-)
+  })
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut()
+  if (error) {
+    throw error
+  }
+}
+
+export const checkAdminAccess = async (userEmail: string): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase
+      .from("admin_users")
+      .select("is_active")
+      .eq("email", userEmail)
+      .eq("is_active", true)
+      .single()
+
+    if (error || !data) {
+      return false
+    }
+
+    return data.is_active
+  } catch (error) {
+    console.error("Error checking admin access:", error)
+    return false
+  }
+}
+
+export const getCurrentUser = async () => {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser()
+
+  if (error || !user) {
+    return null
+  }
+
+  return user
+}
