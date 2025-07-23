@@ -2,7 +2,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { AdminLayout } from "@/components/admin-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,8 +12,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Plus, Edit, Trash2, Star } from "lucide-react"
 import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from "@/lib/queries"
+import { deleteProductImage } from "@/lib/storage"
+import { ImageUpload } from "@/components/image-upload"
 import Image from "next/image"
 
 interface ProductForm {
@@ -35,6 +37,7 @@ export default function ProductsPage() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<any>(null)
+  const [formError, setFormError] = useState<string | null>(null)
   const [formData, setFormData] = useState<ProductForm>({
     name: "",
     price: 0,
@@ -56,20 +59,40 @@ export default function ProductsPage() {
       image: "",
     })
     setEditingProduct(null)
+    setFormError(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setFormError(null)
+
+    // Basic validation
+    if (!formData.name.trim()) {
+      setFormError("Product name is required")
+      return
+    }
+
+    if (formData.price <= 0) {
+      setFormError("Price must be greater than 0")
+      return
+    }
+
     try {
       if (editingProduct) {
+        // If image was changed and there was an old image, delete the old one
+        console.log("Updating product with data:", formData)
+        if (formData.image !== editingProduct.image && editingProduct.image) {
+          await deleteProductImage(editingProduct.image)
+        }
         await updateProduct.mutateAsync({ id: editingProduct.id, ...formData })
       } else {
+        console.log("Creating product with data:", formData)
         await createProduct.mutateAsync(formData)
       }
       setIsDialogOpen(false)
       resetForm()
-    } catch (error) {
-      console.error("Failed to save product:", error)
+    } catch (error: any) {
+      setFormError(error.message || "Failed to save product")
     }
   }
 
@@ -87,14 +110,22 @@ export default function ProductsPage() {
     setIsDialogOpen(true)
   }
 
-  const handleDelete = async (id: number) => {
-    if (confirm("Are you sure want to delete this product?")) {
+  const handleDelete = async (product: any) => {
+    if (confirm("Are you sure you want to delete this product?")) {
       try {
-        await deleteProduct.mutateAsync(id)
+        // Delete image from storage if exists
+        if (product.image) {
+          await deleteProductImage(product.image)
+        }
+        await deleteProduct.mutateAsync(product.id)
       } catch (error) {
         console.error("Failed to delete product:", error)
       }
     }
+  }
+
+  const handleImageChange = (imageUrl: string) => {
+    setFormData((prev) => ({ ...prev, image: imageUrl }))
   }
 
   if (isLoading) {
@@ -125,51 +156,67 @@ export default function ProductsPage() {
                 Add Product
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{editingProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {formError && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{formError}</AlertDescription>
+                  </Alert>
+                )}
+
+                {/* Image Upload */}
+                <ImageUpload currentImage={formData.image} onImageChange={handleImageChange} label="Product Image" />
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Product Name</Label>
+                    <Label htmlFor="name">Product Name *</Label>
                     <Input
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
+                      placeholder="Enter product name"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="price">Price</Label>
+                    <Label htmlFor="price">Price (₹) *</Label>
                     <Input
                       id="price"
                       type="number"
                       step="0.01"
+                      min="0"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                       required
+                      placeholder="0.00"
                     />
                   </div>
                 </div>
+
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="tag">Tag</Label>
-                    <Input
-                      id="tag"
-                      value={formData.tag}
-                      onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
-                    />
-                  </div>
                   <div>
                     <Label htmlFor="category">Category</Label>
                     <Input
                       id="category"
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      placeholder="e.g., Electronics, Clothing"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="tag">Tag</Label>
+                    <Input
+                      id="tag"
+                      value={formData.tag}
+                      onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
+                      placeholder="e.g., featured, sale, new"
                     />
                   </div>
                 </div>
+
                 <div>
                   <Label htmlFor="description">Description</Label>
                   <Textarea
@@ -177,37 +224,38 @@ export default function ProductsPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
+                    placeholder="Enter product description"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="rating">Rating (0-5)</Label>
-                    <Input
-                      id="rating"
-                      type="number"
-                      min="0"
-                      max="5"
-                      step="0.1"
-                      value={formData.rating}
-                      onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="image">Image URL</Label>
-                    <Input
-                      id="image"
-                      value={formData.image}
-                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                      placeholder="/placeholder.svg?height=200&width=200"
-                    />
-                  </div>
+
+                <div>
+                  <Label htmlFor="rating">Rating (0-5)</Label>
+                  <Input
+                    id="rating"
+                    type="number"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    value={formData.rating}
+                    onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}
+                    placeholder="4.5"
+                  />
                 </div>
-                <div className="flex justify-end space-x-2">
+
+                <div className="flex justify-end space-x-2 pt-4">
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-[#2568AC] hover:bg-[#1e5a9a]">
-                    {editingProduct ? "Update" : "Create"} Product
+                  <Button
+                    type="submit"
+                    className="bg-[#2568AC] hover:bg-[#1e5a9a]"
+                    disabled={createProduct.isPending || updateProduct.isPending}
+                  >
+                    {createProduct.isPending || updateProduct.isPending
+                      ? "Saving..."
+                      : editingProduct
+                        ? "Update Product"
+                        : "Create Product"}
                   </Button>
                 </div>
               </form>
@@ -236,13 +284,14 @@ export default function ProductsPage() {
                 {products?.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>
-                      <Image
-                        src={product.image || "/placeholder.svg?height=50&width=50&query=product"}
-                        alt={product.name}
-                        width={50}
-                        height={50}
-                        className="rounded-lg object-cover"
-                      />
+                      <div className="w-12 h-12 relative">
+                        <Image
+                          src={product.image || "/placeholder.svg?height=50&width=50&query=product"}
+                          alt={product.name}
+                          fill
+                          className="rounded-lg object-cover"
+                        />
+                      </div>
                     </TableCell>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell>₹{Number(product.price).toFixed(2)}</TableCell>
@@ -264,7 +313,7 @@ export default function ProductsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleDelete(product.id)}
+                          onClick={() => handleDelete(product)}
                           className="text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="w-4 h-4" />
