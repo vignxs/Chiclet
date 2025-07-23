@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line } from "recharts"
 import { Package, ShoppingCart, CreditCard, Users, TrendingUp, TrendingDown } from "lucide-react"
-import { useDashboardStats } from "@/lib/queries"
 import { AdminLayout } from "@/components/admin-layout"
+import { useEnhancedDashboardStats, useBestSellingProducts } from "@/lib/queries"
 
 export default function AdminDashboard() {
-  const { data: stats, isLoading } = useDashboardStats()
+  const { data: stats, isLoading } = useEnhancedDashboardStats()
+  const { data: bestSellingProducts, isLoading: isLoadingProducts } = useBestSellingProducts()
 
   if (isLoading) {
     return (
@@ -60,17 +62,17 @@ export default function AdminDashboard() {
     },
   ]
 
-  const chartData =
-    stats?.recentOrders?.reduce((acc: any[], order) => {
-      const existing = acc.find((item) => item.date === order.date)
-      if (existing) {
-        existing.orders += 1
-        existing.revenue += order.revenue
-      } else {
-        acc.push({ date: order.date, orders: 1, revenue: order.revenue })
+  const chartData = stats?.ordersChartData || []
+
+  const bestSellingChartData =
+    bestSellingProducts?.map((product) => {
+      const typedProduct = product as { name: string; quantity: number; revenue: number }
+      return {
+        name: typedProduct.name.length > 15 ? typedProduct.name.substring(0, 15) + "..." : typedProduct.name,
+        quantity: typedProduct.quantity,
+        revenue: typedProduct.revenue,
       }
-      return acc
-    }, []) || []
+    }) || []
 
   return (
     <AdminLayout>
@@ -147,7 +149,7 @@ export default function AdminDashboard() {
               <ChartContainer
                 config={{
                   revenue: {
-                    label: "Revenue",
+                    label: "Revenue (₹)",
                     color: "#2568AC",
                   },
                 }}
@@ -171,6 +173,33 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Best Selling Products Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Best Selling Products</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                quantity: {
+                  label: "Quantity Sold",
+                  color: "#2568AC",
+                },
+              }}
+              className="h-[300px]"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={bestSellingChartData} layout="horizontal">
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" width={120} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="quantity" fill="#2568AC" radius={4} />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   )
