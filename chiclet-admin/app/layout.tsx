@@ -7,8 +7,11 @@ import { ReactQueryProvider } from "@/components/react-query-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard",
+  title: "LPR Admin Dashboard",
   description: "E-commerce admin dashboard for managing orders, products, and payments",
+  icons: {
+    icon: "/favicon.ico", // path in public/
+  },
 }
 
 export default function RootLayout({
