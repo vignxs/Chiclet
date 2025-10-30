@@ -1,27 +1,60 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Categories() {
   const categories = [
-    { name: "Earrings", image: "https://img.freepik.com/premium-photo/gold-jhumka_1188452-6995.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
-    { name: "Necklaces", image: "https://img.freepik.com/free-photo/young-woman-exudes-elegance-traditional-sari-generated-by-ai_188544-38358.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
-    { name: "Bangles", image: "https://img.freepik.com/free-photo/close-up-hindu-bride-s-hands-covered-with-henna-tattoos_8353-8859.jpg?ga=GA1.1.1175264985.1744437286&semt=ais_items_boosted&w=740" },
-    { name: "Haram", image: "https://img.freepik.com/free-photo/multi-colored-gemstone-jewelry-symbol-elegance-generated-by-ai_188544-27715.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740" },
-  ]
+    {
+      name: "Earrings",
+      image:
+        "https://img.freepik.com/premium-photo/gold-jhumka_1188452-6995.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740",
+    },
+    {
+      name: "Necklaces",
+      image:
+        "https://img.freepik.com/free-photo/young-woman-exudes-elegance-traditional-sari-generated-by-ai_188544-38358.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740",
+    },
+    {
+      name: "Bangles",
+      image:
+        "https://img.freepik.com/free-photo/close-up-hindu-bride-s-hands-covered-with-henna-tattoos_8353-8859.jpg?ga=GA1.1.1175264985.1744437286&semt=ais_items_boosted&w=740",
+    },
+    {
+      name: "Haram",
+      image:
+        "https://img.freepik.com/free-photo/multi-colored-gemstone-jewelry-symbol-elegance-generated-by-ai_188544-27715.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740",
+    },
+    {
+      name: "Bridal Set",
+      image:
+        "https://i.pinimg.com/736x/ab/30/84/ab3084b63edaba008d55cf3f6403666b.jpg",
+    },
+    {
+      name: "Combo Set",
+      image:
+        "https://i.pinimg.com/736x/5b/23/ac/5b23ac790d1f17dad1110a2a09dadd36.jpg",
+    },
+    {
+      name: "Hip Belt",
+      image:
+        "https://i.pinimg.com/736x/c8/df/3a/c8df3a31b91f98a1a0e015ec97789ab8.jpg?uid=R56299312&ga=GA1.1.120496150.1741877174&semt=ais_hybrid&w=740",
+    },
+  ];
 
   return (
     <section className="w-full py-12 md:py-24">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Shop by Category</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+              Shop by Category
+            </h2>
             <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mx-auto">
               Find the perfect accessories for every occasion
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 place-items-center justify-center gap-4 md:gap-8 mt-8">
           {categories.map((category, i) => (
             <Link
               key={i}
@@ -37,13 +70,15 @@ export default function Categories() {
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              <div className="absolute inset-0  bg-opacity-20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-opacity-30">
-                <h3 className="text-white font-medium text-lg md:text-xl">{category.name}</h3>
+              <div className="absolute inset-0 bg-opacity-20 flex items-center justify-center transition-opacity duration-300 group-hover:bg-opacity-30">
+                <h3 className="text-white font-medium text-lg md:text-xl">
+                  {category.name}
+                </h3>
               </div>
             </Link>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
